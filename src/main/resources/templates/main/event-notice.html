@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Event & Notice</title>
+<style>
+/* 전체 컨테이너 */
+.container {
+	width: 1200px;
+	margin: auto;
+	padding: 20px 0;
+}
+
+/* 공지사항 리스트를 Flexbox로 구성 */
+.notice-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	justify-content: space-between;
+}
+
+/* 개별 공지사항 카드 스타일 */
+.notice-item {
+	width: calc(33.33% - 20px); /* 한 줄에 3개씩 나오도록 설정 */
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	background-color: white;
+	text-align: left;
+}
+
+
+.notice-item img {
+	width: 330px;
+   /* 이미지 크기를 크게 조정 */
+   height: 180px;
+	display: block;
+}
+
+/* 카드 내부 콘텐츠 스타일 */
+.notice-content {
+	padding: 10px;
+}
+
+.notice-number {
+	font-size: 12px;
+	color: #888;
+	margin-bottom: 5px;
+}
+
+.notice-title {
+	font-weight: bold;
+	margin: 10px 0;
+	font-size: 14px;
+}
+
+.notice-date {
+	font-size: 12px;
+	color: #888;
+	margin-bottom: 5px;
+}
+
+.notice-views {
+	font-size: 12px;
+	color: #888;
+}
+
+/* 페이징 스타일 */
+.pagination {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.pagination a {
+	text-decoration: none;
+	margin: 0 5px;
+	color: #333;
+	font-size: 14px;
+}
+
+.pagination a.currentPaging {
+	font-weight: bold;
+	color: #007bff;
+}
+</style>
+</head>
+<body>
+	<div th:replace="~{layouts/header}"></div>
+	<br>
+	<br>
+	<div class="container">
+		<div class="notice-list">
+			<!-- 반복문을 사용하여 공지사항 목록을 표시 -->
+			<div th:each="dto : ${list}" class="notice-item">
+
+				<div class="notice-content">
+					<a id="subjectA"
+						th:href="@{/main/event-noticeView(seq=${dto.MBseq},pg=${pg})}">
+						<img th:src="@{'/storage/' + ${dto.MBimg}}" alt="공지사항/이벤트 이미지">
+					</a>
+					<div class="notice-title" th:text="${dto.MBsub}" align="center">공지사항 제목</div>					
+					<div class="notice-date" th:text="${dto.MBlogtime}" align="center"></div>
+					<div class="notice-views" th:text="'조회수: ' + ${dto.MBhit}" align="center"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 페이징 처리 -->
+		<div class="pagination">
+			<!-- 이전 페이지 링크 -->
+			<th:block th:if="${startPage > 3}">
+				<a th:href="@{/main/event-notice(pg=${startPage-1})}" class="paging">이전</a>
+			</th:block>
+
+			<!-- 페이지 번호 링크 -->
+			<th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+				<th:block th:if="${pg == i}">
+					<a th:href="@{/main/event-notice(pg=${i})}" th:text="${i}"
+						class="currentPaging"></a>
+				</th:block>
+				<th:block th:unless="${pg == i}">
+					<a th:href="@{/main/event-notice(pg=${i})}" th:text="${i}"
+						class="paging"></a>
+				</th:block>
+			</th:block>
+
+			<!-- 다음 페이지 링크 -->
+			<th:block th:if="${endPage < totalP}">
+				<a th:href="@{/main/event-notice(pg=${endPage+1})}" class="paging">다음</a>
+			</th:block>
+
+
+		</div>
+	</div>
+	<div th:replace="~{layouts/footer}"></div>
+</body>
+</html>

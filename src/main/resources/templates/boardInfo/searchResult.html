@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>검색 결과</title>
+<style>   
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    margin-top: 80px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table th, .table td {
+    padding: 12px;
+    text-align: center; /* 가운데 정렬 */
+    border-bottom: 1px solid #ddd;
+}
+
+.result-content {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.result-title {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.result-info {
+    font-size: 1.1em;
+    line-height: 1.5em;
+}
+
+.paging {
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.currentPaging {
+    color: red;
+    text-decoration: underline;
+}
+
+.no-results {
+    text-align: center;
+    color: #666;
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+.button {
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    padding: 10px 20px;
+    margin: 10px auto;
+    display: block;
+    background-color: #A6A6A6;
+}
+
+.button:hover {
+    background-color: #747474;
+}
+
+.button a {
+    text-decoration: none;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .table th, .table td {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+}
+</style>
+</head>
+<body>
+   <div th:replace="~{layouts/header}"></div>
+   <div class="container">
+      <h1>검색 결과</h1>
+
+      <div th:if="${results.isEmpty()}" class="no-results">
+         <p>검색 결과가 없습니다.</p>
+      </div>
+      
+      <table class="table">
+         <tr>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>내용</th>
+            <th>작성일</th>
+         </tr>
+         <div th:if="${!results.isEmpty()}">
+            <tr th:each="board : ${results}">
+               <td>
+                  <a th:href="@{/boardinfo/boardInfoView(Bseq=${board.Bseq})}" class="result-title" th:text="${board.Bsub}"></a>
+               </td>
+               <td>
+                  <p class="result-info" th:text="${board.Bname}"></p>
+               </td>
+               <td>
+                  <p class="result-info" th:text="${board.Bcon}"></p>
+               </td>
+               <td>
+                  <p class="result-info" th:text="${board.Blogtime}"></p>
+               </td>
+            </tr>
+         </div>
+      </table>
+      <button class="button">
+         <a href="main/main">목록</a>
+      </button>
+   </div>
+   <div th:replace="~{layouts/footer}"></div>
+</body>
+</html>

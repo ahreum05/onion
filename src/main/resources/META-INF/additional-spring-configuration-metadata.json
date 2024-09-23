@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "project.upload.path",
+  "type": "java.lang.String",
+  "description": "A description for 'project.upload.path'"
+}]}

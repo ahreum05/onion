@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="../js/memberScript.js"></script>
+<script type="text/javascript">
+function checkIdClose() {
+   opener.form1.userid.value = "[[${userid}]]";
+   window.close();
+   opener.form1.upwd.focus();
+}
+
+function checkId() {
+   var sId = document.register.userid.value.trim();
+   if (sId == "") {
+      alert("먼저 아이디를 입력하세요.");
+      document.register.userid.focus();
+      return false;
+   } 
+   document.register.submit();
+}
+</script>
+</head>
+<body>
+   <div>
+   <div th:if="${result}">
+      <p>[[${userid}]]는 사용중입니다.</p><br>
+      <form action="/member/checkId" name="register">
+         아이디
+         <input type="text" name="userid">
+         <input type="button" value="중복체크" onclick="checkId()">
+      </form>
+   </div>
+   <div th:if="${!result}">
+      <p>[[${userid}]]는 사용 가능합니다.</p><br>
+      <button type="button" onclick="checkIdClose()">사용</button>
+   </div>
+</div>
+</body>
+</html>

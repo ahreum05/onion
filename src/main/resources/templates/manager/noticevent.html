@@ -1,0 +1,15 @@
+
+
+<script>
+    window.onload = function() {
+    	setTimeout(function() {
+			if ("[[${result}]]" == "true") {
+                alert("작성하신 글을 저장하였습니다.");
+                location.href = "/manager/noticeventList?seq=[[${seq}]]&pg=[[${pg}]]";
+            } else {
+                alert("저장 실패");
+                history.back();
+            }
+        }, 100);
+    }
+</script>

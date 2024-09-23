@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>게시글 입력</title>
+
+
+<style>
+/* 폼 내부의 스타일 */
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+/* 제목 입력 필드 스타일 */
+#subject {
+	width: 700px; /* 에디터와 동일한 너비로 설정 */
+	height: 50px; /* 세로 길이 조정 */
+	font-size: 1.5em; /* 텍스트 크기 1.5배 설정 */
+}
+
+/* 스마트에디터의 크기 설정 */
+#smarteditor {
+	width: 700px;
+	height: auto;
+	margin-bottom: 10px; /* 에디터와 버튼 사이에 여백 추가 */
+}
+
+.btn-group .inner {
+	text-align: center;
+}
+
+/* 버튼 크기 및 스타일 */
+#btn-insert {
+	padding: 15px 30px; /* 버튼 크기 조정 */
+	font-size: 18px; /* 버튼 텍스트 크기 */
+	background-color: #28a745;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+/* 버튼 호버 효과 */
+#btn-insert:hover {
+	background-color: #218838;
+}
+
+/* 에디터 스타일 */
+textarea {
+	width: 100%;
+	height: 400px; /* 에디터 높이 설정 */
+}
+</style>
+
+</head>
+<body>
+
+	<form id="boardForm" action="/sale/boardwrite" method="post"
+		enctype="multipart/form-data">
+
+		<div id="smarteditor">
+			<input type="text" id="subject" name="subject"
+				placeholder="제목을 입력해주세요">
+			<textarea id="editorTxt" name="editorTxt" rows="10" cols="10"></textarea>
+			<div class="form-group">
+				<label for="is_available">게시 여부</label> <input type="checkbox"
+					id="is_available" name="is_available" value="1" checked> 게시
+				중
+			</div>
+			<input type="file" id="fileUpload" name="img" accept="image/*"
+				required="required"> <br>
+			<p>*이미지 파일만 등록 가능합니다.</p>
+		</div>
+		<div class="btn-group">
+			<div class="inner">
+				<button type="submit" id="btn-insert">등록</button>
+			</div>
+		</div>
+	</form>
+
+</body>
+
+</html>
+

@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>중고거래 Onion</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+<script src="../js/main.js" defer></script>
+</head>
+
+<body>
+	<div th:replace="~{layouts/header}"></div>
+
+	<!-- 배너 슬라이더 -->
+   <div class="slider">
+      <div class="slides">
+         <!-- 배너 목록을 서버에서 동적으로 렌더링, isActive가 true인 배너만 표시 -->
+         <div th:each="banner : ${bannerList}" th:if="${banner.isActive}" class="slide">
+            <img th:src="@{|${banner.imageUrl}|}" th:alt="${'배너 이미지 ' + banner.id}">
+         </div>
+      </div>
+      <a class="prev" onclick="moveSlide(-1)">◀</a> 
+      <a class="next" onclick="moveSlide(1)">▶</a>
+   </div>
+
+	<div class="page-wrapper">
+		<div class="content">
+			<table class="info-table">
+				<tr align="center">
+					<td><img alt="new" src="../img/Main/new.png"> <a
+						href="../community/communityList">커뮤니티 게시글 전체보기</a></td>
+					<td><img alt="hot" src="../img/Main/hot.png"> <a
+						href="../boardinfo/boardInfoList">알바 전체보기</a></td>
+					<td><img alt="heart" src="../img/Main/heart.png"> <a
+						href="../main/boardInfocategory">중고거래 게시물 전체보기</a></td>
+					<td><img alt="all" src="../img/Main/all.png"> <a
+						href="../boardinfo/boardInfoList">상점 전체보기</a></td>
+				</tr>
+			</table>
+
+			<div class="category-section">
+				<h4>인기 커뮤니티 게시글</h4>
+				<div class="more-link-container">
+					<a href="../community/communityList" class="more-link">더보기</a>
+				</div>
+				<div th:each="dto : ${list}" class="community-item">
+					<a th:href="@{/community/communityView(seq=${dto.cseq},pg=${pg})}">
+						<img th:src="@{|/storage/${dto.cimg}|}" alt="게시글 이미지">
+					</a>
+					<div class="community-content">
+						<a th:href="@{/community/communityView(seq=${dto.cseq},pg=${pg})}">
+							<div class="community-title">[[${dto.csub}]]</div>
+						</a><br> <a
+							th:href="@{/community/communityView(seq=${dto.cseq},pg=${pg})}">
+							<div class="community-content">[[${dto.ccon}]]</div>
+						</a>
+						<div class="community-info">작성자: [[${dto.cname}]] | 좋아요:
+							[[${dto.clike}]] | 조회수: [[${dto.chit}]] | 작성일:
+							[[${dto.clogtime}]]</div>
+					</div>
+				</div>
+
+
+				<h4>인기 게시물</h4>
+				<div class="more-link-container">
+					<a href="../boardinfo/boardInfoList" class="more-link">더보기</a>
+				</div>
+				<div class="product-grid">
+					<div th:each="dto : ${popularList}" class="product-card">
+						<a
+							th:href="@{/boardinfo/boardInfoView(Bseq=${dto.Bseq}, pg=${pg})}">
+							<img
+							th:src="${dto.Bimg != null ? '/storage/' + dto.Bimg : '/images/default.png'}"
+							alt="상품 이미지">
+						</a>
+						<div class="product-info">
+							<a
+								th:href="@{/boardinfo/boardInfoView(Bseq=${dto.Bseq}, pg=${pg})}"
+								th:text="${dto.bsub}" class="product-title">제품 제목</a>
+							<p th:text="${dto.bprc}">제품 가격</p>
+							<span th:text="${dto.blogtime}">게시 시간</span><br> <span
+								th:text="${'조회수 ' + dto.bhit + '회'}">조회수</span><br> <span
+								th:text="${'좋아요 ' + dto.blike + '개'}">좋아요</span>
+						</div>
+					</div>
+				</div>
+
+			<!--	<h4>찜 게시물</h4>
+				<div class="more-link-container">
+					<a href="../boardinfo/boardInfoList" class="more-link">더보기</a>
+				</div>
+				<div class="product-grid">
+					<div th:each="dto : ${jjimList}" class="product-card">
+						<a
+							th:href="@{/boardinfo/boardInfoView(Bseq=${dto.Bseq}, pg=${pg})}">
+							<img
+							th:src="${dto.Bimg != null ? '/storage/' + dto.Bimg : '/images/default.png'}"
+							alt="상품 이미지">
+						</a>
+						<div class="product-info">
+							<a
+								th:href="@{/boardinfo/boardInfoView(Bseq=${dto.Bseq}, pg=${pg})}"
+								th:text="${dto.bsub}" class="product-title">제품 제목</a>
+							<p th:text="${dto.bprc}">제품 가격</p>
+							<span th:text="${dto.blogtime}">게시 시간</span><br> <span
+								th:text="${'조회수 ' + dto.bhit + '회'}">조회수</span><br> <span
+								th:text="${'좋아요 ' + dto.blike + '개'}">좋아요</span>
+						</div>
+					</div>
+				</div>
+-->
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="~{layouts/footer}"></div>
+</body>
+
+</html>

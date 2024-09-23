@@ -1,0 +1,18 @@
+<div th:replace="~{layouts/header}"></div>
+
+<script>
+	window.onload = function() {
+		setTimeout(function(){
+		if("[[${result}]]" == "true") {
+			alert("글 저장 완료");
+			location.href = "/main/main";
+		} else {
+			alert("저장실패");
+			history.back();
+			}
+		}, 100);
+	}
+	
+</script>
+
+<div th:replace="~{layouts/footer}"></div>

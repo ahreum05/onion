@@ -1,0 +1,81 @@
+<div class="container" style="width: 100%; max-width: 500px; margin: auto; padding: 20px;">
+    <!-- 마이페이지 제목 -->
+    <div align="center" style="margin-bottom: 20px;">
+        <h1 style="font-size: 2.5em; color: #333;">Mypage</h1>
+    </div>
+
+    <!-- 유저 정보 테이블 -->
+    <div style="background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <table style="width: 100%; border-collapse: collapse; margin: auto;">
+            <tr>
+                <th style="text-align: left; display: block; margin-bottom: 8px; font-weight: bold;">프로필 사진</th>
+                <td style="padding: 10px 0;">
+                    <img th:src="@{/storage/} + ${user.profile_image}" alt="프로필 사진"
+                        style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
+                        
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: left; display: block; margin-bottom: 8px; font-weight: bold;"> 이름</th>
+                <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">[[${user.uname}]]</td>
+            </tr>
+            
+            <tr>
+                <th style="text-align: left; display: block; margin-bottom: 8px; font-weight: bold;"> 아 이 디</th>
+                <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">[[${user.userid}]]</td>
+            </tr>
+            <tr>
+                <th style="text-align: left; display: block; margin-bottom: 8px; font-weight: bold;"> 핸 드 폰</th>
+                <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">[[${user.utel1}]]-[[${user.utel2}]]-[[${user.utel3}]]</td>
+            </tr>
+            <tr>
+                <th style="text-align: left; display: block; margin-bottom: 8px; font-weight: bold;"> 주   소</th>
+                <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">[[${user.uaddr}]]</td>
+            </tr>
+            <tr>
+                <th style="text-align: left; display: block; margin-bottom: 8px; font-weight: bold;"> 가 입 일</th>
+                <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">[[${#temporals.format(user.ulogtime, 'yyyy-MM-dd HH:mm:ss')}]]</td>
+            </tr>
+            
+            <tr>
+                <th style="text-align: left; display: block; margin-bottom: 8px; font-weight: bold;">사용자 역할</th>
+                <td style="padding: 10px 0;">
+                    <span th:if="${user.Role == 'MANAGER'}">관리자</span>
+                    <span th:if="${user.Role == 'USER'}">유저</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    
+
+    <!-- 수정 페이지로 이동하는 버튼 -->
+    <div align="center" style="margin-top: 20px;">
+		<div style="display: inline-block; margin-right: 10px;">
+			<a href="/user/updateForm" style="text-decoration: none;">
+				<button
+					style="padding: 10px 20px; font-size: 16px; background-color: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+					정보 수정</button>
+			</a>
+		</div>
+
+		<!-- 관리자 전용 페이지로 이동하는 버튼 (관리자일 경우에만 표시) -->
+		<div align="center" style="margin-top: 20px;"
+			th:if="${user.Role == 'MANAGER'}">
+			<a href="/admin/dashboard" style="text-decoration: none;">
+				<button
+					style="padding: 10px 20px; font-size: 16px; background-color: #FF6347; color: white; border: none; border-radius: 5px; cursor: pointer;">
+					관리자 대시보드</button>
+			</a>
+		</div>
+
+		<!-- 메인 페이지로 가는 버튼 -->
+		<div style="display: inline-block;">
+			<a href="/main/main" style="text-decoration: none;">
+				<button
+					style="padding: 10px 20px; font-size: 16px; background-color: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+					메인 페이지</button>
+			</a>
+		</div>
+	</div>
+</div>

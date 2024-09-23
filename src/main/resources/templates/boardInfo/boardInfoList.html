@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+   <meta charset="UTF-8">
+   <title>중고거래 Onion</title>
+   <style>
+      .page-wrapper {
+         max-width: 1200px;
+         margin: 0 auto;
+         padding: 0 20px;
+      }
+
+      .category-section {
+         margin: 20px;
+      }
+
+      .product-grid {
+         margin-top: 50px;
+         display: grid;
+         grid-template-columns: repeat(5, 1fr);
+         gap: 10px;
+      }
+
+      .product-card {
+         border: 1px solid #ddd;
+         border-radius: 5px;
+         overflow: hidden;
+         text-align: center;
+         padding: 10px;
+         background-color: #fff;
+      }
+
+      .product-card img {
+         width: 100%;
+         height: auto;
+         max-height: 150px;
+         object-fit: cover;
+      }
+
+      .product-info {
+         margin-top: 10px;
+      }
+
+      .paging {
+         color: black;
+         text-decoration: none;
+         margin: 0 5px;
+         font-size: 16px;
+      }
+
+      .currentPaging {
+         color: red;
+         text-decoration: none;
+         font-size: 16px;
+         font-weight: bold;
+      }
+   </style>
+</head>
+
+<body>
+   <div th:replace="~{layouts/header}"></div>
+   <div class="page-wrapper">
+   	<h1>< [[${cate}]] ></h1>
+   
+      <div class="product-grid">
+         <!-- 제품 카드들 -->
+         <div class="product-card" th:each="boardInfo : ${list}">
+            <a th:href="@{boardInfoView(Bseq=${boardInfo.Bseq}, pg=${pg}, tag=${tag})}">
+               <img th:src="${boardInfo.Bimg != null ? '/storage/' + boardInfo.Bimg : '/images/default.png'}" alt="상품 이미지">
+            </a>
+            <div class="product-info">
+               <span th:text="${'작성자 : '+boardInfo.Bname}">작성자</span><br>
+               <span th:text="${'글제목 : '+boardInfo.Bsub}">글제목</span><br>
+               <span th:text="${'업로드 : '+ boardInfo.Blogtime}">업로드 시간</span>
+            </div>
+         </div>
+      </div>
+
+      <br>
+
+      <div align="center">
+         <!-- 이전 페이지 링크 -->
+         <th:block th:if="${pg > 1}">
+            <a th:href="@{/boardinfo/boardInfoList(pg=${pg - 1}, tag=${tag})}" class="paging">이전</a>
+         </th:block>
+
+         <!-- 페이지 번호 링크 -->
+         <th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+            <th:block th:if="${pg == i}">
+               <span th:text="${i}" class="currentPaging"></span>
+            </th:block>
+            <th:block th:unless="${pg == i}">
+               <a th:href="@{/boardinfo/boardInfoList(pg=${i}, tag=${tag})}" th:text="${i}" class="paging"></a>
+            </th:block>
+         </th:block>
+
+         <!-- 다음 페이지 링크 -->
+         <th:block th:if="${pg < totalP}">
+            <a th:href="@{/boardinfo/boardInfoList(pg=${pg + 1}, tag=${tag})}" class="paging">다음</a>
+         </th:block>
+      </div>
+      
+       <!-- 검색 폼 -->
+      <form th:action="@{/boardinfo/boardInfoList(pg=${pg})}" method="get"
+         class="search-form">
+         <input type="text" name="search" placeholder="검색어를 입력하세요"
+            th:value="${search}">
+         <button type="submit" class="search-button">검색</button>
+         <a href="#" class="refresh" th:href="@{/boardinfo/boardInfoList}">
+            <button type="button" class="refresh">새로고침</button>
+         </a>
+      </form>
+   </div>
+   <div th:replace="~{layouts/footer}"></div>
+</body>
+
+</html>

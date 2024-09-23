@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배너 수정</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+.container {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+}
+
+form {
+	width: 400px;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+label {
+	display: block;
+	margin-bottom: 8px;
+	font-weight: bold;
+}
+
+input, select {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+
+.button-group {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	
+}
+
+
+button {
+	width: 100%;
+	padding: 14px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	color: #fff;
+	font-size: 16px;
+	margin-top: 10px;
+}
+
+button[type="submit"] {
+	background-color: #212121;
+}
+button[type="button"] {
+	background-color: #212121;
+}
+</style>
+</head>
+<body>
+    <h1>배너 수정</h1>
+
+    <!-- 배너 수정 폼 -->
+    <form action="/manager/banner/update" method="post" enctype="multipart/form-data">
+        <input type="hidden" id="id" name="id" th:value="${banner.id}"><!-- 배너 ID (hidden) -->
+
+        <label for="imageFile">이미지 파일:</label>
+        <input type="file" id="imageFile" name="imageFile"><br>
+        <img th:src="@{|${banner.imageUrl}|}" alt="배너 이미지" width="100"><br>
+
+        <label for="title">제목:</label>
+        <input type="text" id="title" name="title" th:value="${banner.title}"><br>
+
+        <label for="description">설명:</label>
+        <input type="text" id="description" name="description" th:value="${banner.description}"><br>
+
+        <label for="isActive">활성 상태:</label>
+        <select id="isActive" name="isActive">
+            <option th:selected="${banner.isActive == true}" value="true">활성</option>
+            <option th:selected="${banner.isActive == false}" value="false">비활성</option>
+        </select><br>
+
+        <button type="submit">수정 완료</button>
+        <button type="button" onclick="window.location.href='/manager/dashboard'">뒤로 가기</button>
+    </form>
+</body>
+</html>
+
+
+

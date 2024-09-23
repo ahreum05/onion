@@ -1,0 +1,195 @@
+        /* 기본 스타일 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        /* 고정 헤더 */
+        .header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #ffffff;
+            z-index: 1000;
+            padding: 10px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* 중앙 컨텐츠 */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin: 80px auto 0;
+            padding: 20px;
+            position: relative;
+        }
+
+		/* 슬라이더 박스 */
+		.image-wrapper {
+		    border: 2px solid #ccc;
+		    border-radius: 15px;
+		    padding: 10px;
+		    background-color: #f9f9f9;
+		    width: 550px;
+		    height: 550px;
+		    position: relative;
+		    overflow: hidden;
+		}
+		
+		/* 업로드 시간 */
+		.upload-time {
+		    position: relative;
+		    bottom: 20px;
+		    right: 180px;	
+		       	    
+		    color: #A4A4A4;
+		    padding: 5px;
+		    border-radius: 5px;
+		    z-index: 1000; /* 슬라이더 버튼 위로 올리기 */
+		}
+
+
+
+
+        /* 슬라이더 컨테이너 */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+
+        /* 슬라이더 내부의 이미지 리스트 */
+        .slider-wrapper {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+            margin: 0;
+        }
+
+        /* 개별 이미지 */
+        .slider-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+            margin: 0;
+        }
+
+        /* 슬라이더 버튼 */
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        /* 네비게이션 바 */
+        .breadcrumb {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 10px 0;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .breadcrumb li {
+            display: inline;
+            position: relative;
+        }
+
+        .breadcrumb li::after {
+            content: ">";
+            margin-left: 5px;
+        }
+
+        .breadcrumb li:last-child::after {
+            content: "";
+        }
+
+        /* 상세 페이지 내용 */
+        .product-view-container {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .product-view-container img {
+            max-width: 100%;
+            border-radius: 15px;
+        }
+
+        .product-view-container p {
+            margin: 10px 0;
+        }
+
+        .button-chat, .button-trade {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button-chat {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .button-chat:hover {
+            background-color: #218838;
+        }
+
+        .button-trade {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .button-trade:hover {
+            background-color: #23272b;
+        }
+
+        /* 푸터 */
+        .footer {
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            background-color: #f1f1f1;
+            margin-top: auto;
+        }
+        
+        hr {
+       		width: 400px;
+        }
+        
+        .subject {
+        	position: relative;
+        	left: 150px;
+        }
+        
+        .price {
+        	position: relative;
+        	font-size: 29px;
+        	left: 200px;
+        }

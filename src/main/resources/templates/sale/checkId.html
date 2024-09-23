@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>아이디 중복 체크</title>
+<script type="text/javascript">
+	// 아이디 사용을 클릭했을 때 부모 창에 아이디를 전달하고 닫음
+	function checkIdClose() {
+		opener.document.registerForm.Saleid.value = "[[${saleid}]]";
+		window.close();
+		opener.document.registerForm.Salepwd.focus();
+	}
+
+	// 중복 체크 버튼을 클릭했을 때
+	function checkId() {
+		var sId = document.registerForm.Saleid.value.trim();
+		if (sId === "") {
+			alert("먼저 아이디를 입력하세요.");
+			document.registerForm.Saleid.focus();
+			return false;
+		}
+		document.registerForm.submit(); // 폼을 제출하여 서버로 요청
+	}
+</script>
+</head>
+<body>
+	<div>
+		<!-- 아이디가 사용 중일 경우 -->
+		<div th:if="${result}">
+			<p>[[${saleid}]]는 사용중입니다.</p>
+			<br>
+			<form action="/sale/checkId" name="registerForm">
+				아이디 
+				<input type="text" name="Saleid" > 
+				<input type="button" value="중복 체크" onclick="checkId()">
+			</form>
+		</div>
+
+		<!-- 아이디가 사용 가능할 경우 -->
+		<div th:if="${!result}">
+			<p>[[${saleid}]]는 사용 가능합니다.</p>
+			<br>
+			<button type="button" onclick="checkIdClose()">사용</button>
+		</div>
+	</div>
+</body>
+</html>

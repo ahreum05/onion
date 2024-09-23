@@ -1,0 +1,106 @@
+<script type="text/javascript" src="../js/noticeventScript.js"></script>
+<style>
+/* 페이지 컨테이너 스타일 */
+.container3 {
+	max-width: 800px; /* 페이지 최대 너비 설정 */
+	margin: 0 auto; /* 페이지를 중앙 정렬 */
+	padding: 20px; /* 페이지 여백 추가 */
+	margin-top: 80px;
+	background-color: #f9f9f9; /* 배경색 추가 */
+	border-radius: 8px; /* 모서리 둥글게 */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+}
+
+/* 제목 스타일 */
+h3 {
+	text-align: center;
+	color: #333; /* 제목 색상 */
+	margin-bottom: 20px; /* 제목 아래 여백 */
+}
+
+/* 폼 스타일 */
+form1 {
+	display: flex;
+	flex-direction: column;
+}
+
+/* 테이블 스타일 */
+.table {
+	width: 100%; /* 테이블 너비를 100%로 설정 */
+	border-collapse: collapse; /* 테이블 셀 간격 제거 */
+}
+
+.table td {
+	padding: 10px; /* 셀 안쪽 여백 */
+	border: 1px solid #ddd; /* 셀 테두리 */
+}
+
+.table input[type="text"], 
+.table textarea {
+	width: 100%; /* 입력 필드의 너비를 100%로 설정 */
+	padding: 8px; /* 입력 필드의 안쪽 여백 */
+	border: 1px solid #ddd; /* 입력 필드 테두리 */
+	border-radius: 4px; /* 입력 필드의 모서리 둥글게 */
+	box-sizing: border-box; /* 패딩과 테두리를 포함하여 요소 크기 조정 */
+	margin-bottom: 10px; /* 입력 필드 아래 여백 */
+}
+
+.table input[type="button"], 
+.table input[type="reset"] {
+	background-color: #A6A6A6; /* 버튼 배경색 */
+	color: white; /* 버튼 텍스트 색상 */
+	border: none; /* 버튼 테두리 제거 */
+	padding: 10px 15px; /* 버튼 안쪽 여백 */
+	cursor: pointer; /* 커서 포인터로 변경 */
+	border-radius: 4px; /* 버튼 모서리 둥글게 */
+	margin-right: 10px; /* 버튼 간격 추가 */
+}
+
+.table input[type="button"]:hover, 
+.table input[type="reset"]:hover {
+	background-color: #747474; /* 버튼 호버 시 배경색 변경 */
+}
+
+.table a {
+	
+	text-decoration: none; /* 링크 밑줄 제거 */
+}
+
+.table a:hover {
+	text-decoration: underline; /* 링크 호버 시 밑줄 추가 */
+}
+
+.container {
+    margin-bottom: 150px; /* 컨테이너 아래쪽 여백 추가 */
+}
+</style>
+
+<div class="container3">
+	<h3 style="text-align: center;">이벤트/공지사항 등록</h3>
+	<form action="/manager/noticevent" enctype="multipart/form-data"
+		method="post" name="form1">
+		<table class="table">
+			<tr class="table-primary">
+				<td>글 제목</td>
+			 	<td><input type="text" name="MBsub"></td>
+			</tr>
+			<tr>
+				<td>글 내용</td>
+				<td><textarea name="MBcon" rows="7" cols="50"></textarea></td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="file" name="img"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<!-- '등록' 버튼에 checkWrite() 함수가 정의되어 있는지 확인 --> <input type="button"
+					value="등록" onclick="checkWrite()"> <input type="reset"
+					value="다시작성">
+				</td>
+			</tr>
+			<tr>
+				<td><a href="/manager/noticeventList">목록</a></td>
+			</tr>
+		</table>
+	</form>
+</div>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<tr>
+			<td>중고 게시글</td>
+			<!-- 작성 게시물 -->
+			<div th:each="list:${BoardList}">
+				<td>[[${}]]</td>
+			</div>
+		</tr>
+		<tr>
+			<td>커뮤니티 게시글</td>
+			<!-- 작성 게시물 -->
+			<td></td>
+		</tr>
+		<tr>
+			<td>댓글</td>
+			<!-- 작성 댓글 -->
+			<td>[[${commentcount}]]</td>
+		</tr>
+
+</body>
+</html>

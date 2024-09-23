@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+.con {
+	background-color: white;
+	max-width: 800px;
+	margin: 20px auto;
+	padding: 20px;
+}
+
+h1 {
+	text-align: center;
+	color: #333;
+}
+
+.detail-group {
+	margin-bottom: 15px;
+}
+
+.detail-group label {
+	font-weight: bold;
+	color: #333;
+}
+
+.detail-group p {
+	padding: 10px;
+	background-color: #f9f9f9;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	margin-top: 5px;
+	font-size: 16px;
+	color: #555;
+}
+
+.checkbox-group, .radio-group {
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: 5px;
+}
+
+.checkbox-group label, .radio-group label {
+	margin-right: 15px;
+}
+
+button {
+	padding: 10px;
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	font-size: 16px;
+	cursor: pointer;
+	margin-top: 20px;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+
+/* 버튼들을 가로로 배열 */
+.button-group {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 20px;
+}
+
+.button-group button {
+	flex: 1;
+	margin-right: 10px; /* 버튼 사이의 간격 */
+}
+
+.button-group button:last-child {
+	margin-right: 0;
+}
+
+/* 목록 버튼을 파란색으로 표시 */
+.blue-button {
+	background-color: #007BFF;
+}
+
+.blue-button:hover {
+	background-color: #0056b3;
+}
+
+/* 작은 화면에 맞는 반응형 디자인 */
+@media ( min-width : 600px) {
+	.container {
+		padding: 30px;
+	}
+}
+</style>
+</head>
+<body>
+
+	<div class="con">
+		<h1>채용 공고 상세 보기</h1>
+
+		<div class="detail-group">
+			<label>근무 요일:</label>
+			<p>[[${board.JBWorkingdate}]]</p>
+		</div>
+
+		<div class="detail-group">
+			<label>근무 시간:</label>
+			<p>[[${board.JBWorkinghours}]]</p>
+		</div>
+
+		<div class="detail-group">
+			<label>채용공고 종료일:</label>
+			<p>[[${board.JBEnddate}]]</p>
+		</div>
+
+		<div class="detail-group">
+			<label>급여 종류:</label>
+			<p>[[${board.JBSalarytype}]]</p>
+		</div>
+
+		<div class="detail-group">
+			<label>급여 금액:</label>
+			<p>[[${board.JBSalary}]]원</p>
+		</div>
+
+		<div class="detail-group">
+			<label>채용 인원:</label>
+			<p>[[${board.JBPeoplenum}]]명</p>
+		</div>
+
+		<div class="detail-group">
+			<label>제목:</label>
+			<p>[[${board.JBsub}]]</p>
+		</div>
+
+		<div class="detail-group">
+			<label>글 내용:</label>
+			<p>[[${board.JBcon}]]</p>
+		</div>
+
+		<div class="detail-group">
+			<label>게시 여부:</label>
+			<div class="detail-value"
+				th:text="${board.is_available == 1 ? '게시 중' : '게시 중지'}">게시 상태</div>
+
+		</div>
+
+		<div class="button-group">
+			<button type="button" class="blue-button"
+				onclick="loadContent('/sale/Jobboardlist')">목록</button>
+			<button type="button"
+				th:onclick="|loadJobModify(${board.JBseq}); 
+				 event.preventDefault();|">수정</button>
+		<button type="button" th:onclick="window.location.href='/sale/JobDelete?seq=[[${board.JBseq}]]'">삭제</button>
+		</div>
+	</div>
+
+</body>
+</html>

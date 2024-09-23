@@ -1,0 +1,14 @@
+
+
+
+<form th:action="@{/user/delete}" method="post">
+        <!-- 비밀번호 확인 필드 -->
+        <div>
+            <label>비밀번호:</label>
+            <input type="password" name="password" required />
+        </div>
+        <div>
+            <button type="submit">회원 탈퇴</button>
+            <button type="button" onclick="window.history.back()">취소</button>
+        </div>
+</form>

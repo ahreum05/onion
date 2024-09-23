@@ -1,0 +1,17 @@
+<div th:replace="~{layouts/header}"></div>
+
+<script>
+	window.onload = function() {
+		setTimeout(function() {
+			if ("[[${result}]]" == "true") {
+				alert("작성하신 글을 저장하였습니다.");
+				location.href = "/community/communityList";
+			} else {
+				alert("저장 실패");
+				history.back();
+			}
+		}, 100);
+	}
+</script>
+
+<div th:replace="~{layouts/footer}"></div>

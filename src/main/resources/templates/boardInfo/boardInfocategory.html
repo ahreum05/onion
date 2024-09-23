@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>카테고리 카드 레이아웃</title>
+<script src="../js/main.js" defer></script>
+<style>
+.page-wrapper {
+	max-width: 1200px;
+	/* 페이지의 최대 너비 설정 */
+	margin: 0 auto;
+	/* 페이지를 중앙 정렬 */
+	padding: 0 20px;
+	/* 페이지 좌우에 여백 추가 */
+	/* footer랑 여백설정*/
+	margin-bottom: 180px;
+}
+
+.buttons {
+	max-width: 800px;
+	margin: 0 auto;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr); /* 4개의 열로 설정 */
+	gap: 20px; /*그리드 아이템 간의 간격*/
+	margin-right: 230px;
+	margin-top: 110px;
+}
+
+.button {
+	margin: 20px 0;
+}
+
+.button a {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	text-decoration: none;
+	color: black;
+	background-color: #f9f9f9;
+	box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+	margin: 5px;
+	transition: background-color 0.3s;
+}
+
+.button img {
+	width: 50px;
+	height: 50px;
+	margin-bottom: 10px;
+}
+
+.button a:hover {
+	background-color: #e0e0e0;
+}
+
+/* 슬라이더 기본 스타일 */
+.slider {
+	position: relative;
+	/* 슬라이더를 상대 위치로 설정 */
+	width: 100%;
+	/* 슬라이더 너비를 전체 화면으로 설정 */
+	overflow: hidden;
+	/* 슬라이더 범위를 넘는 내용 숨김 */
+	margin: 0 auto;
+	/* 슬라이더를 중앙 정렬 */
+}
+
+.slides {
+	display: flex;
+	/* 슬라이드들을 플렉스 박스로 설정 */
+	transition: transform 0.5s ease-in-out;
+	/* 슬라이드 전환 시 부드러운 애니메이션 효과 */
+}
+
+.slide {
+	min-width: 100%;
+	/* 각 슬라이드의 너비를 전체 화면으로 설정 */
+	box-sizing: border-box;
+	/* 패딩과 테두리를 포함하여 전체 너비 계산 */
+}
+
+/* 슬라이드 내 이미지 스타일 */
+.slide img {
+	width: 100%;
+	/* 이미지 너비를 슬라이드에 맞게 조정 */
+	height: 400px;
+	/* 이미지 비율 유지 */
+	display: block;
+	/* 이미지의 하단 여백 제거 */
+}
+
+/* 슬라이더 화살표 스타일 */
+.prev, .next {
+	cursor: pointer;
+	/* 화살표에 마우스를 올리면 포인터 커서로 변경 */
+	position: absolute;
+	/* 화살표를 절대 위치로 설정 */
+	top: 50%;
+	/* 화살표를 수직 중앙에 배치 */
+	width: auto;
+	/* 화살표 너비 자동 조정 */
+	padding: 16px;
+	/* 화살표 내부 여백 설정 */
+	margin-top: -22px;
+	/* 수직 중앙에 맞추기 위한 마진 조정 */
+	color: white;
+	/* 화살표 텍스트 색상 설정 */
+	font-weight: bold;
+	/* 화살표 텍스트 굵기 설정 */
+	font-size: 25px;
+	/* 화살표 텍스트 크기 설정 */
+	transition: background-color 0.6s ease;
+	/* 배경색 변화에 대한 부드러운 전환 효과 */
+	border-radius: 0 3px 3px 0;
+	/* 화살표 모서리 둥글게 설정 */
+	user-select: none;
+	/* 화살표의 텍스트 선택 방지 */
+	background-color: #A6A6A6;
+	/* 화살표 배경색 설정 */
+	z-index: 1;
+	/* 화살표가 다른 요소 위에 표시되도록 설정 */
+}
+
+/* 화살표 링크의 밑줄 제거 */
+.prev, .next {
+	text-decoration: none;
+	/* 밑줄 제거 */
+}
+
+.prev {
+	left: 0;
+	/* 이전 화살표를 왼쪽에 배치 */
+	border-radius: 3px 0 0 3px;
+	/* 이전 화살표의 왼쪽 모서리 둥글게 설정 */
+}
+
+.next {
+	right: 0;
+	/* 다음 화살표를 오른쪽에 배치 */
+	border-radius: 3px 0 0 3px;
+	/* 다음 화살표의 오른쪽 모서리 둥글게 설정 */
+}
+
+.prev:hover, .next:hover {
+	background-color: rgba(0, 0, 0, 0.8);
+	/* 화살표에 마우스를 올리면 배경색 어두워짐 */
+}
+</style>
+</head>
+<body>
+	<div th:replace="~{layouts/header}"></div>
+
+	<div class="slider">
+		<div class="slides">
+			<!-- 배너 목록을 서버에서 동적으로 렌더링, isActive가 true인 배너만 표시 -->
+			<div th:each="banner : ${bannerList}" th:if="${banner.isActive}"
+				class="slide">
+				<img th:src="@{|${banner.imageUrl}|}"
+					th:alt="${'배너 이미지 ' + banner.id}">
+			</div>
+		</div>
+		<a class="prev" onclick="moveSlide(-1)">◀</a> <a class="next"
+			onclick="moveSlide(1)">▶</a>
+	</div>
+	<div class="page-wrapper">
+		<!-- 카테고리 리스트를 반복하며 버튼을 생성 -->
+		<div class="buttons">
+			<div class="button" th:each="cate : ${list}">
+				<a th:href="@{/boardinfo/boardInfoList(cate=${cate.boardcategory})}"
+					th:title="${cate.boardcategory}"> <img
+					th:src="@{/img/Main/{img}(img=${cate.Boardcategoryimg})}"
+					alt="카테고리"> [[${cate.boardcategory}]]
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="~{layouts/footer}"></div>
+</body>
+</html>

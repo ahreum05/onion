@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f5f5f5;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+
+		.container {
+			width: 1600px;
+			height: 800px;
+			background-color: white;
+			padding: 50px;
+			border-radius: 10px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
+
+		h2 {
+			margin-bottom: 20px;
+			font-size: 24px;
+			text-align: left;
+		}
+
+		form {
+			display: flex;
+			justify-content: space-between;
+			flex-wrap: wrap;
+		}
+
+		.form-section {
+			width: 28%;
+			padding: 15px;
+		}
+
+		.form-group {
+			width: 100%;
+			margin-bottom: 20px;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+			font-weight: bold;
+		}
+
+		input[type="text"],
+		input[type="password"],
+		input[type="email"],
+		input[type="file"],
+		input[type="url"],
+		select,
+		input[type="time"] {
+			width: 100%;
+			padding: 10px;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			font-size: 16px;
+		}
+
+		button {
+			width: 100%;
+			background-color: #28a745;
+			color: white;
+			padding: 15px;
+			border: none;
+			border-radius: 5px;
+			font-size: 18px;
+			cursor: pointer;
+			margin-top: 20px;
+		}
+
+		button:hover {
+			background-color: #218838;
+		}
+
+		.time-container {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.time-container input {
+			width: 48%;
+		}
+	</style>
+
+	<script type="text/javascript">
+		// 아이디 체크 함수
+		function checkId() {
+			var sId = document.registerForm.Saleid.value;  // registerForm의 Saleid 필드를 참조
+			if (sId == "") {
+				alert("먼저 아이디를 입력하세요.");
+				document.registerForm.Saleid.focus();
+				isIdChecked = false;
+				return;
+			} else {
+				// 새로운 창을 열고 아이디를 서버에 전달하여 중복 확인
+				window.open("/sale/checkId?Saleid=" + sId, "checkIdWindow", "width=350,height=200");
+				isIdChecked = true;
+			}
+		}
+		// 비밀번호 확인 체크 함수
+		function pwdcheck() {
+			var password = registerForm.Salepwd;
+			var confirmPassword = registerForm.Salerepwd;
+
+			if (password.value !== confirmPassword.value) {
+				alert("비밀번호가 일치하지 않습니다. 다시 확인해주세요.");
+				password.value = "";
+				confirmPassword.value = "";
+				password.focus();
+				return false;
+			}
+			return true;
+		}
+
+		// 사업자 번호 체크 함수
+		function Businesscheck() {
+			var Salebusinessnum = registerForm.Salebusinessnum;
+
+			// 숫자인지 체크
+			if (isNaN(Salebusinessnum.value)) {
+				alert("숫자를 입력하시오");
+				Salebusinessnum.value = "";
+				Salebusinessnum.focus();
+				return false;
+			}
+
+			// 10자리인지 체크
+			if (Salebusinessnum.value.length !== 10) {
+				alert("사업자 번호는 10자리를 모두 입력하시오");
+				Salebusinessnum.focus();
+				return false;
+			}
+
+			// 값이 비어있는지 체크
+			if (!Salebusinessnum.value) {
+				alert("사업자 번호를 입력해주세요");
+				Salebusinessnum.focus();
+				return false;
+			}
+
+			// 사업자 번호 유효성 체크
+			var data = {
+				"b_no": [Salebusinessnum.value]  // 입력한 사업자 번호를 배열로 전달
+			};
+
+			// API 호출을 통해 사업자 번호 유효성 확인
+			$.ajax({
+				url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=sNMUTjTTsS3rYPTzyPH4J71xnswX23aKKlh74eLhrGNIy6XLiIXtjK%2F96E1aoTwsXfx7N29NK3PoUV7Hp0cQIw%3D%3D",
+				type: "POST",
+				data: JSON.stringify(data), // JSON을 문자열로 변환하여 전송
+				dataType: "JSON",
+				traditional: true,
+				contentType: "application/json; charset=UTF-8",
+				accept: "application/json",
+				success: function (result) {
+					if (result.match_cnt == "1") {
+						// 사업자 번호가 유효한 경우
+						alert("유효한 사업자 번호입니다.");
+					} else {
+						// 유효하지 않은 경우
+						alert("유효하지 않은 사업자 번호입니다: " + result.data[0]["tax_type"]);
+						Salebusinessnum.focus();
+					}
+				},
+				error: function (result) {
+					// API 호출 중 에러가 발생한 경우
+					console.log("API 요청 오류");
+					console.log(result.responseText);
+					alert("사업자 번호 조회 중 오류가 발생했습니다.");
+
+				}
+			});
+
+			return false;  // API 확인 후 폼이 제출되도록 하기 위해 반환값 false로 설정
+		}
+
+		// 모든 체크가 완료되었을 때 submit 실행
+
+		// 모든 체크가 완료되었을 때 submit 실행
+		function validateAndSubmit() {
+			// 아이디 중복 체크 여부 확인
+
+			// 아이디 필드 확인
+			var Saleid = document.registerForm.Saleid.value;
+			if (Saleid === "") {
+				alert("아이디를 입력해주세요.");
+				document.registerForm.Saleid.focus();
+				return false;
+			}
+
+			// 비밀번호 필드 확인
+			var Salepwd = document.registerForm.Salepwd.value;
+			if (Salepwd === "" || Salepwd.length < 6) {
+				alert("비밀번호는 6자리 이상 입력해주세요.");
+				document.registerForm.Salepwd.focus();
+				return false;
+			}
+
+			// 비밀번호 확인
+			if (!pwdcheck()) {
+				return false;
+			}
+
+			// 핸드폰 번호 유효성 검사
+			var Saletel = document.registerForm.Saletel.value;
+			var phonePattern = /^010-\d{4}-\d{4}$/;  // 한국 전화번호 패턴
+			if (!phonePattern.test(Saletel)) {
+				alert("핸드폰 번호 형식이 올바르지 않습니다. 010-####-#### 형식으로 입력해주세요.");
+				document.registerForm.Saletel.focus();
+				return false;
+			}
+
+			// 이메일 유효성 검사
+			var Saleemail = document.registerForm.Saleemail.value;
+			var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			if (!emailPattern.test(Saleemail)) {
+				alert("올바른 이메일 주소를 입력해주세요.");
+				document.registerForm.Saleemail.focus();
+				return false;
+			}
+
+			// 스토어명 필드 확인
+			var Salestorename = document.registerForm.Salestorename.value;
+			if (Salestorename === "") {
+				alert("스토어명을 입력해주세요.");
+				document.registerForm.Salestorename.focus();
+				return false;
+			}
+
+			//가게번호			
+			var Salestoretel = document.registerForm.Salestoretel.value;
+
+			if (Salestoretel === "") {
+				alert("고객센터 번호 형식이 올바르지 않습니다. ###-####-#### 형식으로 입력해주세요.");
+				document.registerForm.Salestoretel.focus();
+				return false;
+			}
+
+
+
+
+			// 카테고리 선택 확인
+			var Salecategory = document.registerForm.Salecategory.value;
+			if (Salecategory === "카테고리를 선택해주세요.") {
+				alert("스토어 카테고리를 선택해주세요.");
+				document.registerForm.Salecategory.focus();
+				return false;
+			}
+
+			// 가게 이미지 유효성 검사
+			var Simg = document.registerForm.Simg.files[0];
+			if (!Simg) {
+				alert("가게 이미지를 업로드해주세요.");
+				document.registerForm.Simg.focus();
+				return false;
+			}
+
+			// 가게 이미지 파일 형식 검사 (jpg, jpeg, png만 허용)
+			var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+			if (!allowedExtensions.exec(Simg.name)) {
+				alert("가게 이미지는 jpg, jpeg, png 형식만 가능합니다.");
+				document.registerForm.Simg.value = ""; // 입력 필드 초기화
+				document.registerForm.Simg.focus();
+				return false;
+			}
+
+			// 가게 이미지 파일 크기 검사 (예: 2MB 이하)
+			var maxSize = 2 * 1024 * 1024; // 2MB
+			if (Simg.size > maxSize) {
+				alert("가게 이미지 크기는 2MB 이하이어야 합니다.");
+				document.registerForm.Simg.value = ""; // 입력 필드 초기화
+				document.registerForm.Simg.focus();
+				return false;
+			}
+
+			// 사업자 명 검사
+			var Saleceo = document.registerForm.Saleceo.value;
+			if (Saleceo === "") {
+				alert("사업자 명을 입력해주세요.");
+				document.registerForm.Saleceo.focus();
+				return false;
+			}
+
+			// 상호명 검사
+			var Salecompanyname = document.registerForm.Salecompanyname.value;
+			if (Salecompanyname === "") {
+				alert("상호명을 입력해주세요.");
+				document.registerForm.Salecompanyname.focus();
+				return false;
+			}
+
+			// 사업자 등록번호 확인
+			var Salebusinessnum = document.registerForm.Salebusinessnum.value;
+
+			// 숫자인지 체크
+			if (isNaN(Salebusinessnum)) {
+				alert("숫자를 입력하시오");
+				document.registerForm.Salebusinessnum.value = "";
+				document.registerForm.Salebusinessnum.focus();
+				return false;
+			}
+
+			// 10자리인지 체크
+			if (Salebusinessnum.length !== 10) {
+				alert("사업자 번호는 10자리를 모두 입력하시오");
+				document.registerForm.Salebusinessnum.focus();
+				return false;
+			}
+
+			// 값이 비어있는지 체크
+			if (!Salebusinessnum) {
+				alert("사업자 번호를 입력해주세요");
+				document.registerForm.Salebusinessnum.focus();
+				return false;
+			}
+
+			// 사업자 주소 유효성 검사
+			var postcode = document.getElementById("sample6_postcode").value;
+			var address = document.getElementById("sample6_address").value;
+			var detailAddress = document.getElementById("sample6_detailAddress").value;
+			var extraAddress = document.getElementById("sample6_extraAddress").value;
+			if (postcode === "") {
+				alert("우편번호를 입력해주세요.");
+				document.getElementById("sample6_postcode").focus();
+				return false;
+			}
+
+			if (address === "") {
+				alert("기본 주소를 입력해주세요.");
+				document.getElementById("sample6_address").focus();
+				return false;
+			}
+
+			if (detailAddress === "") {
+				alert("상세 주소를 입력해주세요.");
+				document.getElementById("sample6_detailAddress").focus();
+				return false;
+			}
+			if (extraAddress === "") {
+				alert("상세 주소를 입력해주세요.");
+				document.getElementById("sample6_detailAddress").focus();
+				return false;
+			}
+
+			// 사업자 등록증 파일 업로드 확인
+			var Bimg = document.registerForm.Bimg.value;
+			if (Bimg === "") {
+				alert("사업자 등록증 파일을 업로드해주세요.");
+				document.registerForm.Bimg.focus();
+				return false;
+			}
+
+			// 모든 검증이 완료되면 폼을 제출
+			document.registerForm.submit();
+		}
+
+
+		function sample6_execDaumPostcode() {
+			new daum.Postcode({
+				oncomplete: function (data) {
+					// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+					// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+					// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+					var addr = ''; // 주소 변수
+					var extraAddr = ''; // 참고항목 변수
+
+					//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+					if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+						addr = data.roadAddress;
+					} else { // 사용자가 지번 주소를 선택했을 경우(J)
+						addr = data.jibunAddress;
+					}
+
+					// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+					if (data.userSelectedType === 'R') {
+						// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+						// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+						if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+							extraAddr += data.bname;
+						}
+						// 건물명이 있고, 공동주택일 경우 추가한다.
+						if (data.buildingName !== '' && data.apartment === 'Y') {
+							extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+						}
+						// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+						if (extraAddr !== '') {
+							extraAddr = ' (' + extraAddr + ')';
+						}
+						// 조합된 참고항목을 해당 필드에 넣는다.
+						document.getElementById("sample6_extraAddress").value = extraAddr;
+
+					} else {
+						document.getElementById("sample6_extraAddress").value = '';
+					}
+
+					// 우편번호와 주소 정보를 해당 필드에 넣는다.
+					document.getElementById('sample6_postcode').value = data.zonecode;
+					document.getElementById("sample6_address").value = addr;
+					// 커서를 상세주소 필드로 이동한다.
+					document.getElementById("sample6_detailAddress").focus();
+				}
+			}).open();
+		}
+	</script>
+</head>
+
+<body>
+
+	<div class="container">
+		<form name="registerForm" method="post" enctype="multipart/form-data" action="/sale/register">
+			<!-- 회원 정보 입력 -->
+			<div class="form-section">
+				<h2>회원 정보 입력</h2>
+
+				<div class="form-group">
+					<label for="username">아이디</label>
+					<input type="text" id="username" name="Saleid" required="required" placeholder="아이디를 입력해주세요.">
+					<input type="button" value="아이디 확인" onclick="checkId()">
+				</div>
+
+				<div class="form-group">
+					<label for="password">비밀번호</label>
+					<input type="password" id="password" name="Salepwd" required="required" placeholder="비밀번호를 입력해주세요.">
+				</div>
+
+				<div class="form-group">
+					<label for="password-confirm">비밀번호 확인</label>
+					<input type="password" id="password-confirm" name="Salerepwd" required="required"
+						placeholder="비밀번호를 한번 더 입력해주세요.">
+				</div>
+
+				<div class="form-group">
+					<label for="phone">핸드폰번호</label>
+					<input type="text" id="phone" name="Saletel" required="required" placeholder="010-####-####">
+				</div>
+
+				<div class="form-group">
+					<label for="email">이메일</label>
+					<input type="email" id="email" name="Saleemail" required="required" placeholder="이메일을 입력해주세요.">
+				</div>
+			</div>
+
+			<!-- 가게 정보 입력 -->
+			<div class="form-section">
+				<h2>가게 정보 입력</h2>
+
+				<div class="form-group">
+					<label for="store-name">스토어명</label>
+					<input type="text" id="store-name" name="Salestorename" required="required"
+						placeholder="스토어명을 입력해주세요.">
+				</div>
+
+				<div class="form-group">
+					<label for="store-url">스토어 URL</label>
+					<input type="text" id="store-url" name="Saleurl" placeholder="스토어 URL을 입력해주세요.">
+				</div>
+
+				<div class="form-group">
+					<label for="customer-center">고객센터 번호</label>
+					<input type="text" id="customer-center" name="Salestoretel" required="required"
+						placeholder="고객센터 번호를 입력해주세요.">
+				</div>
+
+				<div class="form-group">
+					<label for="store-category">스토어 카테고리</label>
+					<select id="store-category" name="Salecategory" required="required">
+						<option>카테고리를 선택해주세요.</option>
+						<option th:each="category : ${catelist}" th:value="${category.SCname}"
+							th:text="${category.SCname}">
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label for="business-hours">영업시간</label>
+					<div class="time-container">
+						<input type="time" id="open-time" name="Saleopen" value="09:00">
+						<input type="time" id="close-time" name="Saleclose" value="20:00">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="store-image">파일 선택</label>
+					<input type="file" id="store-image" name="Simg" required="required">
+				</div>
+			</div>
+
+			<!-- 사업자 정보 입력 -->
+			<div class="form-section">
+				<h2>사업자 정보 입력</h2>
+
+				<div class="form-group">
+					<label for="ceo">대표자 이름</label>
+					<input type="text" id="ceo" name="Saleceo" required="required" placeholder="사업자명을 입력해주세요.">
+				</div>
+
+				<div class="form-group">
+					<label for="companyName">상호명</label>
+					<input type="text" id="companyName" name="Salecompanyname" required="required"
+						placeholder="상호명을 입력해주세요.">
+				</div>
+
+				<div class="form-group">
+					<label for="bid">사업자 등록번호</label>
+					<input type="text" id="bid" name="Salebusinessnum" required="required" maxlength="10" minlength="10"
+						placeholder="사업자등록번호를 입력해주세요.(-없이 숫자만 입력)">
+					<button type="button" onclick="Businesscheck()">확인</button>
+				</div>
+
+				<div class="form-group">
+					<label for="sample6_postcode">사업자 주소</label>
+					<input type="text" id="sample6_postcode" placeholder="우편번호">
+					<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+					<input type="text" id="sample6_address" name="Saleaddress1" required="required"
+						placeholder="사업자 주소를 입력해주세요.">
+					<input type="text" id="sample6_detailAddress" name="Saleaddress2" required="required"
+						placeholder="상세 주소를 입력해주세요.">
+					<input type="text" id="sample6_extraAddress" name="Saleaddress3" required="required"
+						placeholder="참고 사항">
+				</div>
+
+				<div class="form-group">
+					<label for="blicense">사업자 등록증</label>
+					<input type="file" id="blicense" name="Bimg" required="required">
+				</div>
+			</div>
+
+			<!-- 제출 버튼 -->
+			<button type="button" onclick="validateAndSubmit()">제출하기</button>
+		</form>
+	</div>
+
+</body>
+
+</html>

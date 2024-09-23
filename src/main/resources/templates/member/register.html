@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>회원가입</title>
+<script type="text/javascript" src="/js/memberScript.js?v=2"></script>
+
+<style>
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: white; /* 배경색 설정 */
+}
+
+.container {
+    width: 100%;
+    max-width: 400px; /* 폼의 최대 너비 설정 */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff; /* 폼의 배경색 설정 */
+    border-radius: 12px; /* 테두리를 둥글게 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    box-sizing: border-box;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate; /* 테두리 중첩 제거 */
+    border-spacing: 0; /* 테두리 간 간격 제거 */
+    margin-bottom: 20px; /* 폼과 버튼 사이의 간격 */
+    background-color: #ffffff; /* 테이블의 배경색 설정 */
+    border-radius: 12px; /* 테두리를 둥글게 */
+    overflow: hidden; /* 테두리 둥글기를 유지 */
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #e0e0e0; /* 셀 테두리 색상 연한 회색으로 설정 */
+}
+
+td:first-child {
+    width: 80px;
+    text-align: center;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+    width: calc(100% - 20px); /* 입력 필드의 너비 설정 */
+    padding: 10px;
+    border: 1px solid #e0e0e0; /* 입력 필드 테두리 색상 연한 회색으로 설정 */
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="button"] {
+    margin-left: 5px;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0; /* 버튼 테두리 색상 연한 회색으로 설정 */
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    box-sizing: border-box;
+}
+
+input[type="submit"],
+input[type="reset"] {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+input[type="submit"] {
+    background-color: #FFE08C;
+}
+
+input[type="reset"] {
+    background-color: #B2EBF4;
+}
+
+input[type="submit"]:hover {
+    background-color: #F2CB61;
+}
+
+input[type="reset"]:hover {
+    background-color: #5CD1E5;
+}
+</style>
+
+</head>
+<body>
+    <form action="/register" name="form1" method="post" onsubmit="return inputCheck()">
+        <table border="1" width="370">
+            <tr>
+                <td width="70" align="center">이름</td>
+                <td><input type="text" name="uname" placeholder="이름 입력" required></td>
+            </tr>
+            <tr>
+                <td align="center">아이디</td>
+                <td>
+                    <input type="text" name="userid" required>
+                    <input type="button" value="중복체크" onclick="checkId()">
+                </td>
+            </tr>
+            <tr>
+                <td align="center">비밀번호</td>
+                <td><input type="password" name="upwd" required></td>
+            </tr>
+            <tr>
+                <td align="center">재확인</td>
+                <td><input type="password" name="urepwd" required></td>
+            </tr>
+            <tr>
+                <td align="center">성별</td>
+                <td>
+                    <input type="radio" name="ugender" value="m" checked>남
+                    <input type="radio" name="ugender" value="f">여
+                </td>
+            </tr>
+            <tr>
+            <td align="center">주민번호</td>
+            <td><input type="text" name="ujumin1" required>- 
+                <input type="text" name="ujumin2" required></td>
+         </tr>
+            <tr>
+                <td align="center">이메일</td>
+                <td>
+                    <input type="text" name="uemail1" size="17" required>
+                    @
+                    <select name="uemail2" required>
+                        <option value="naver.com" selected="selected">naver.com</option>
+                        <option value="daum.net">daum.net</option>
+                        <option value="google.com">google.com</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">핸드폰</td>
+                <td>
+                    <select name="utel1" required>
+                        <option value="010">010</option>
+                        <option value="011">011</option>
+                        <option value="019">019</option>
+                    </select>-
+                    <input type="text" name="utel2" size="10" required>-
+                    <input type="text" name="utel3" size="10" required>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">주소</td>
+                <td><input type="text" name="uaddr" size="35" required></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" value="회원가입">
+                    <input type="reset" value="다시 작성">
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
+

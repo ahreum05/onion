@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>음식 상세 정보</title>
+<style>
+.container1 {
+	width: 600px;
+	padding: 20px;
+}
+
+h2 {
+	margin-bottom: 20px;
+	font-size: 24px;
+	text-align: center;
+}
+
+.detail-group {
+	margin-bottom: 15px;
+}
+
+label {
+	font-weight: bold;
+	margin-bottom: 5px;
+	display: block;
+}
+
+.detail-value {
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	font-size: 16px;
+	background-color: #f9f9f9;
+}
+
+img {
+	width: 100%;
+	max-width: 400px;
+	height: auto;
+	border-radius: 5px;
+	margin-bottom: 20px;
+}
+
+button {
+	width: 30%;
+	background-color: #28a745;
+	color: white;
+	padding: 15px;
+	border: none;
+	border-radius: 5px;
+	font-size: 18px;
+	cursor: pointer;
+	margin-top: 20px;
+	text-align: center;
+}
+
+button:hover {
+	background-color: #218838;
+}
+
+button.back {
+	background-color: #007bff;
+	margin-right: 4%;
+}
+
+button.back:hover {
+	background-color: #0056b3;
+}
+
+.button-container {
+	display: flex;
+	justify-content: space-between;
+}
+</style>
+
+
+</head>
+<body>
+
+	<div class="container1">
+		<!-- 음식 이미지 -->
+		<div class="detail-group">
+			<label>[[${board.SBsubject}]]</label>
+		</div>
+
+		<img th:src="@{'/storage/' + ${board.SBimg}}" alt="게시판 이미지">
+
+
+		<div class="detail-group">
+			<div class="detail-value" th:text="${board.SBcontent}"
+				style="white-space: pre-line;"></div>
+		</div>
+
+
+		<!-- 사용 가능 여부 -->
+		<div class="detail-group">
+			<label>게시 상태</label>
+			<div class="detail-value"
+				th:text="${board.is_available == 1 ? '게시 중' : '게시 중지'}">게시 상태</div>
+		</div>
+
+		<!-- 버튼 -->
+		<div class="button-container">
+			<button type="button" class="back"
+				onclick="loadContent('/sale/boardlist')">게시글 리스트</button>
+			<button type="button"
+				th:onclick="|loadBoardModify(${board.SBseq}); 
+				 event.preventDefault();|">수정</button>
+			<button type="button"
+				th:onclick="window.location.href='/sale/BoardDelete?seq=[[${board.SBseq}]]'">삭제</button>
+
+		</div>
+	</div>
+	<script>
+		
+	</script>
+</body>
+
+
+</html>

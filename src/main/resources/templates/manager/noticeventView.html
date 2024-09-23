@@ -1,0 +1,64 @@
+<style>
+
+/* 테이블 스타일 */
+.table {
+	width: 47%; /* 표의 너비를 50%로 줄였습니다 */
+	border-collapse: collapse;
+	margin: 0 auto; /* 표를 가운데로 배치 */
+}
+
+/* 이미지 스타일 */
+.table img {
+	width: 60%; /* 이미지 크기를 60%로 조정 */
+	height: auto;
+	border-radius: 8px;
+	
+}
+
+/* 글 제목과 내용 스타일 */
+.table td {
+	padding: 10px;
+	border: 1px solid #dbdbdb;
+	text-align: center;
+	font-size: 16px;
+}
+
+.table .align {
+	width: 20%; /* 제목 칸의 너비를 줄였습니다 */
+	font-weight: bold;
+	background-color: #f9f9f9;
+	text-align: center;
+}
+
+/* 버튼 정렬 */
+.table .button-group {
+	text-align: center;
+	padding-top: 20px;
+}
+</style>
+
+<div class="container">
+	<table class="table">
+		<tr>
+			<td class="align">글제목</td>
+			<td>[[${dto.MBsub}]]</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><img th:src="@{'/storage/' +${dto.MBimg}}"></td>
+		</tr>
+		<tr>
+			<td class="align">글내용</td>
+			<td>[[${dto.MBcon}]]</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="button-group">
+				<input type="button" value="목록"
+					th:onclick="location.href='/manager/noticeventList?pg=[[${pg}]]'">
+				<input type="button" value="수정"
+					th:onclick="location.href='/manager/noticeventModifyForm?seq=[[${dto.MBseq}]]&pg=[[${pg}]]'">
+				<input type="button" value="삭제"
+					th:onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='/manager/noticeventDelete?seq=[[${dto.MBseq}]]&pg=[[${pg}]]'">
+			</td>
+		</tr>
+	</table>
+</div>

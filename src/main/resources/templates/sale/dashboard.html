@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onion 판매자 메인 페이지</title>
+<style>
+
+
+/* 메인 콘텐츠 스타일 */
+.main-content {
+	flex-grow: 1;
+	margin-left: 20px;
+	padding: 20px;
+}
+
+.main-content h2 {
+	font-size: 28px;
+	color: #333;
+}
+
+.card-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+}
+
+.card {
+	background-color: white;
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	width: 300px;
+	text-align: center;
+}
+
+.card h3 {
+	font-size: 20px;
+	color: #28a745;
+}
+
+.card p {
+	font-size: 14px;
+	color: #666;
+}
+
+
+</style>
+
+
+</head>
+<body>
+		
+		<!-- 메인 콘텐츠 -->
+		<div class="main-content" id="main-content">
+			<h2>판매자 대시보드</h2>
+
+			<div class="card-container">
+				<div class="card">
+					<h3>게시중인 메뉴</h3>
+					<p>총 [[${menucount}]]개</p>
+				</div>
+
+				<div class="card">
+					<h3>게시중인 게시글</h3>
+					<p>총 [[${menucount}]]개</p>
+				</div>
+
+				<div class="card">
+					<h3>채팅 수</h3>
+					<p> [[${chatcount}]]건 </p>
+				</div>
+
+				<div class="card">
+					<h3>오늘의 채팅 수</h3>
+					<p>[[${chattodaycount}]]건</p>
+				</div>
+			</div>
+		</div>
+
+
+</body>
+</html>

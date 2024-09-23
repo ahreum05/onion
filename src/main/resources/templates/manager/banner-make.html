@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>배너 추가</title>
+<style>
+.container {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+}
+
+form {
+	width: 400px;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+label {
+	display: block;
+	margin-bottom: 8px;
+	font-weight: bold;
+}
+
+input, select {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+
+.button-group {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	
+}
+
+
+button {
+	width: 100%;
+	padding: 14px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	color: #fff;
+	font-size: 16px;
+	margin-top: 10px;
+}
+
+button[type="submit"] {
+	background-color: #212121;
+}
+button[type="button"] {
+	background-color: #212121;
+}
+</style>
+</head>
+<body>
+	<!-- 배너 추가 -->
+	
+	<div class="container">
+		<form action="/manager/banner/add" method="post" enctype="multipart/form-data">
+			<h2>새 배너 추가</h2>
+			<label for="imageFile">이미지 파일:</label>
+			<input type="file" id="imageFile" name="imageFile" required>
+			<label for="title">제목:</label>
+			<input type="text" id="title" name="title">
+			<label for="description">설명:</label>
+			<input type="text" id="description" name="description">
+			<label for="isActive">활성 상태:</label>
+			<select id="isActive" name="isActive">
+				<option value="true">활성</option>
+				<option value="false">비활성</option>
+			</select>
+			<div class="button-group" style="margin-top: 100px;">
+				<button type="submit">배너 추가</button>
+				<button type="button" onclick="window.location.href='/manager/dashboard'">뒤로 가기</button>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

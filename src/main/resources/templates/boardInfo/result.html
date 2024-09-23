@@ -1,0 +1,41 @@
+<script>
+
+
+	// 게시글 삭제 여부
+	if (html == "boardInfoDelete") {
+		if ("[[${result}]]" != "0") {
+			alert("삭제 되었습니다.");
+			location.href = "/boardinfo/boardInfoList";
+		} else {
+			alert("삭제에 실패했습니다. 다시 시도해주세요");
+			history.back();
+		}
+	}
+
+	// 게시글 수정 여부
+	if (html == "modify") {
+		if ("[[${result}]]" != "0") {
+			alert("수정 되었습니다.");
+			location.href = "/boardinfo/boardInfoList";
+		} else {
+			alert("수정에 실패했습니다. 다시 시도해주세요");
+			history.back();
+		}
+	}
+
+	window.onload = function() {
+		var seq = "[[${seq}]]";
+		var pg = "[[${pg]}]]";
+		setTimeout(function(){
+		if("[[${result}]]" == "true") {
+			alert("글 저장 완료");
+			location.href = "/boardinfo/boardInfoView?seq="+seq+"&pg="+pg;
+		} else {
+			alert("저장실패");
+			history.back();
+			}
+		}, 100);
+	}
+	
+
+</script>

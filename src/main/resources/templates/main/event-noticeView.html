@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>게시글 보기</title>
+	<style>
+		.container {
+			max-width: 600px;
+			margin: 0 auto;
+			background-color: white;
+			padding: 20px;
+			border: 1px solid #dbdbdb;
+			border-radius: 8px;
+			margin-top: 20px;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		}
+
+		/* 테이블 스타일 */
+		.table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		.table td {
+			padding: 10px;
+			border: 1px solid #dbdbdb;
+			text-align: left;
+			font-size: 16px;
+		}
+
+		.table .align {
+			width: 100px;
+			font-weight: bold;
+			background-color: #f9f9f9;
+			text-align: center;
+		}
+
+		/* 이미지 스타일 */
+		.table img {
+			width: 100%;
+			height: auto;
+			border-radius: 8px;
+		}
+
+		/* 버튼 스타일 */
+		.back-btn {
+			display: block;
+			width: 100%;
+			padding: 10px 0;
+			margin-top: 20px;
+			background-color: #A6A6A6;
+			color: white;
+			text-align: center;
+			font-size: 16px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			text-decoration: none;
+		}
+
+		.back-btn:hover {
+			background-color: #747474;
+		}
+	</style>
+</head>
+<body>
+	<div th:replace="~{layouts/header}"></div>
+	<br><br>
+	<div class="container">
+		<table class="table">
+			<tr>
+				<td class="align">글제목</td>
+				<td>[[${dto.MBsub}]]</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<img th:src="@{'/storage/' +${dto.MBimg}}" alt="게시글 이미지">
+				</td>
+			</tr>
+			<tr>
+				<td class="align">글내용</td>
+				<td>[[${dto.MBcon}]]</td>
+			</tr>
+			<tr>
+				<td class="align">작성일</td>
+				<td>[[${dto.MBlogtime}]]</td>
+			</tr>
+			<tr>
+				<td class="align">조회수</td>
+				<td>[[${dto.MBhit}]]</td>
+			</tr>
+		</table>
+		
+		<!-- 뒤로가기 버튼 -->
+		<a href="javascript:history.back()" class="back-btn">뒤로가기</a>
+	</div>
+	<div th:replace="~{layouts/footer}"></div>
+</body>
+</html>

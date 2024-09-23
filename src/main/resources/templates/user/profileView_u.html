@@ -1,0 +1,41 @@
+
+
+<div class="container">
+	<div align="center">
+		<font size="7">마이페이지</font>
+	</div>
+	
+	<table class="table" style="width: 700px; margin: auto;">
+			<tr>
+				<td>이름</td>
+			    <td>[[${user.name}]]</td>
+		    </tr>
+		    <tr>
+				<td>아이디</td>
+				<td>[[${user.id}]]</td>
+		    </tr>
+			<tr>
+				<td>전화번호</td>
+                <td>[[${user.tel1]]-[[${user.tel2}]]-[[${user.tel3}]]				
+		    </tr>
+		    <tr>
+				<td>주소</td>
+				<td>[[${user.addr}]]</td>
+			</tr>
+			<tr>
+				<td>Role</td>
+				<td>[[${user.role}]]</td>
+		    </tr>
+		    <tr>
+				<td>가입일</td>
+				<td>[[${user.logtime}]]</td>
+		    </tr>   
+		
+		<tr>
+			<td colspan="7">
+				<input type="button" value="목록"
+					th:onclick="location.href='profileList?pg=[[${pg}]]'">
+			</td>
+		</tr>	
+	</table>
+</div>

@@ -1,0 +1,92 @@
+<style>
+.container {
+   display: flex;
+   justify-content: flex-start; /* 왼쪽 정렬 */
+   width: 100%; /* 전체 너비 */
+}
+
+#main {
+   width: 100%;
+   display: flex; /* flexbox 사용 */
+}
+
+#nav {
+   width: 150px;
+   min-height: 660px;
+   background: black;
+   padding: 10px;
+}
+
+#section {
+   flex-grow: 1; /* 나머지 공간을 채우도록 설정 */
+   background: white;
+   padding: 10px;
+   height: 100%; /* 세션 높이 자동 조절 */
+}
+
+#nav a:link, 
+#nav a:visited, 
+#nav a:active, 
+#nav a:hover {
+   color: white;
+   text-decoration: none;
+}
+
+#nav a:hover {
+   color: green;
+}
+
+#nav p {
+   text-align: center;
+}
+
+.admin-img {  /* admin.png에만 적용되는 스타일 */
+   display: block;
+   margin: 0 auto; /* 이미지를 가로 중앙으로 배치 */
+   width: 600px; /* 이미지의 너비를 600px로 설정 */
+   height: auto; /* 비율을 유지하면서 자동으로 높이 조절 */
+}
+
+#section p {
+   text-align: center; /* 텍스트를 가운데로 정렬 */
+}
+
+#logout-link {
+   display: block;
+   text-align: center; /* 로그아웃 링크도 가운데 정렬 */
+   margin-top: 20px; /* 환영 메시지와 로그아웃 링크 사이 간격 */
+   color: blue; /* 로그아웃 링크 색상 */
+}
+</style>
+
+<div class="container">
+   <div id="main">
+      <nav id="nav">
+         <p>
+            <a href="/manager/dashboard">  관리자 페이지</a>
+         </p>
+         <br>
+         <a href="/manager/profileList">- 회원정보 관리</a><br><br><br> 
+         <a href="/manager/noticeventList">- 공지사항/이벤트</a><br><br><br>
+         <a href="/manager/registerForm">- 매니저 추가</a><br><br><br>
+         <a href="/manager/list">- 매니저 리스트</a><br><br><br>
+         <a href="/manager/banner">- 배너 관리</a><br><br><br>
+         <a href="/manager/banner-make">- 배너 추가</a>
+         <!-- 배너 관리 링크 추가 -->
+      </nav>
+
+      <section id="section">
+         <!-- 요청된 페이지가 없으면 기본 콘텐츠 표시 -->
+         <div th:if="${req == null}">
+            <img class="admin-img" src="../img/Main/admin.png" alt="admin"> <!-- class를 통해 스타일 적용 -->
+            <p>관리자 페이지에 오신 것을 환영합니다.</p>
+            <a id="logout-link" href="/loginForm">로그아웃</a>
+         </div>
+
+         <!-- 요청된 페이지가 있을 경우 해당 페이지로 교체 -->
+         <div th:if="${req != null}">
+            <div th:replace="~{${req}}"></div>
+         </div>
+      </section>
+   </div>
+</div>

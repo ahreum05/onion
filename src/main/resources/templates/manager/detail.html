@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>매니저 상세 정보</title>
+</head>
+<body>
+    <h1>매니저 상세 정보</h1>
+    <p><strong>아이디:</strong> <span th:text="${manager.mid}"></span></p>
+    <p><strong>비밀번호:</strong> <span th:text="${manager.mpwd}"></span></p>
+    <p><strong>가입 날짜:</strong> <span th:text="${manager.mlogtime}"></span></p>
+    <p><strong>권한:</strong> <span th:text="${manager.role}"></span></p>
+
+    <a th:href="@{/manager/update/{mid}(mid=${manager.mid})}">수정</a>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onion 판매자 메인 페이지</title>
+
+
+<style>
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f5f5f5;
+	margin: 0;
+	padding: 0;
+}
+
+/* 상단 헤더 스타일 */
+.head {
+	background-color: #28a745;
+	padding: 15px 0;
+	text-align: center;
+	color: white;
+	font-size: 24px;
+	font-weight: bold;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1000;
+}
+
+/* 메인 컨테이너 */
+.container {
+	display: flex;
+	justify-content: center;
+	padding: 40px;
+	margin-top: 80px; /* 헤더 높이만큼 여백 추가 */
+}
+/* 사이드 메뉴 스타일 */
+.sidebar {
+	text-align: center;
+	width: 150px;
+	height: 450px;
+	background-color: #333;
+	color: white;
+	padding: 20px;
+	border-radius: 10px;
+}
+
+.sidebar ul {
+	list-style-type: none;
+	padding: 0;
+}
+
+.sidebar ul li {
+	margin: 20px 0;
+}
+
+.sidebar ul li a {
+	color: white;
+	text-decoration: none;
+	font-size: 18px;
+	display: block;
+	cursor: pointer;
+}
+
+.sidebar ul li a:hover {
+	background-color: #444;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+/* 메인 콘텐츠 스타일 */
+.main-content {
+	align-items: center;
+	flex-grow: 1;
+	margin-left: 20px;
+	background-color: white;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	min-height: calc(100vh - 320px);
+	width: 90%;
+}
+
+.main-content h2 {
+	font-size: 28px;
+	color: #333;
+}
+</style>
+
+<script>
+	// AJAX를 사용하여 콘텐츠 변경하기
+	window.onload = function() {
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', '/sale/dashboard', true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				document.getElementById('main-content').innerHTML = xhr.responseText;
+			}
+		};
+		xhr.send();
+	}
+
+	// 각 페이지들로 이동하게 끔 설정
+	function loadContent(page) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', page, true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				document.getElementById('main-content').innerHTML = xhr.responseText;
+
+				// 페이지가 로드된 후 검색 필터링 기능을 초기화
+				if (page == '/sale/menulist' || page == '/sale/boardlist') {
+					initMenuPage(); // 검색 및 필터링 기능 초기화
+				}
+			}
+		};
+		xhr.send();
+	}
+
+	// 게시글 리스트.html 에서 li를 클릭했을때 ajax로 게시글 불러옴
+	function loadBoardInfo(seq) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', '/sale/boardinfo?seq=' + seq, true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				document.getElementById('main-content').innerHTML = xhr.responseText;
+			}
+		};
+		xhr.send();
+	}
+
+	// 여기로 정보 받아서 이동하게 하려는 거 // 
+	// 게시글 1개 정보에서 수정버튼 클릭했을 때 Ajax로 메뉴 정보를 불러오기
+	function loaduserdModify(Saleid) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', '/sale/SaleInfoModifyForm?Saleid=' + Saleid, true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				document.getElementById('main-content').innerHTML = xhr.responseText;
+			}
+		};
+		xhr.send();
+	}
+
+	
+	
+	// 여기로 정보 받아서 이동하게 하려는 거 // 
+	// 게시글 1개 정보에서 수정버튼 클릭했을 때 Ajax로 메뉴 정보를 불러오기
+	function loadBoardModify(seq) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', '/sale/boardinfomodifyForm?seq=' + seq, true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				document.getElementById('main-content').innerHTML = xhr.responseText;
+			}
+		};
+		xhr.send();
+	}
+	
+	// 채용공고 리스트.html 에서 li를 클릭했을때 ajax로 게시글 불러옴
+	function loadJobInfo(seq) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', '/sale/JobInfo?seq=' + seq, true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				document.getElementById('main-content').innerHTML = xhr.responseText;
+			}
+		};
+		xhr.send();
+	}
+
+	// 여기로 정보 받아서 이동하게 하려는 거 // 
+	// 채용공고 1개 정보에서 수정버튼 클릭했을 때 Ajax로 메뉴 정보를 불러오기
+	function loadJobModify(seq) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', '/sale/JobInfoModifyForm?seq=' + seq, true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				document.getElementById('main-content').innerHTML = xhr.responseText;
+			}
+		};
+		xhr.send();
+	}
+
+	// 메뉴 리스트.html에서 li를 클릭했을 때 ajax로 메뉴 불러옴
+	function loadMenuInfo(seq) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', '/sale/menuinfo?seq=' + seq, true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				document.getElementById('main-content').innerHTML = xhr.responseText;
+			}
+		};
+		xhr.send();
+	}
+
+	// 여기로 정보 받아서 이동하게 하려는 거 // 
+	// 메뉴 1개 정보에서 수정버튼 클릭했을 때 Ajax로 메뉴 정보를 불러오기
+	function loadMenuModify(seq) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', '/sale/menuinfomodifyForm?seq=' + seq, true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				document.getElementById('main-content').innerHTML = xhr.responseText;
+			}
+		};
+		xhr.send();
+	}
+
+	// 메뉴 리스트.html에서 검색 기능들 
+	function initMenuPage() {
+		// 검색 및 필터링 기능을 초기화
+		var searchInput = document.getElementById('searchInput');
+		var inCheckbox = document.getElementById('In');
+		var stopCheckbox = document.getElementById('Stop');
+
+		if (searchInput) {
+			searchInput.addEventListener('keyup', filterMenu);
+		}
+		if (inCheckbox) {
+			inCheckbox.addEventListener('click', filterMenu);
+		}
+		if (stopCheckbox) {
+			stopCheckbox.addEventListener('click', filterMenu);
+		}
+
+		// 검색 및 필터링 로직
+		function filterMenu() {
+			let input = searchInput ? searchInput.value.toLowerCase() : "";
+			let menuItems = document.querySelectorAll('.list-item');
+
+			let inProgressChecked = inCheckbox && inCheckbox.checked;
+			let stoppedChecked = stopCheckbox && stopCheckbox.checked;
+
+			menuItems
+					.forEach(function(item) {
+						let titleElement = item.querySelector('h2');
+						if (!titleElement) {
+							console
+									.error("Title element (h2) not found in the item.");
+							return;
+						}
+						let titleName = titleElement.textContent.toLowerCase();
+						let listStatus = item.querySelector('.list-status').textContent;
+
+						let matchesName = titleName.includes(input);
+						let matchesStatus = false;
+
+						// 상태에 따라 필터링
+						if (inProgressChecked && listStatus === '게시 중') {
+							matchesStatus = true;
+						}
+						if (stoppedChecked && listStatus === '게시 중지') {
+							matchesStatus = true;
+						}
+						if (!inProgressChecked && !stoppedChecked) {
+							matchesStatus = true; // 체크박스 선택되지 않으면 모든 상태 표시
+						}
+
+						// 이름과 상태가 모두 일치하는 경우에만 표시
+						if (matchesName && matchesStatus) {
+							item.style.display = "flex"; // 조건에 맞는 항목만 표시
+						} else {
+							item.style.display = "none"; // 일치하지 않으면 숨김
+						}
+					});
+		}
+	}
+</script>
+</head>
+<body>
+
+	<!-- 상단 헤더 -->
+	<div class="head">Onion [[${id}]]님의 판매자 페이지</div>
+
+	<!-- 메인 컨테이너 -->
+	<div class="container">
+		<!-- 사이드 메뉴 -->
+		<div class="sidebar">
+			<ul>
+				<li><a onclick="loadContent('/sale/dashboard')">대시보드</a></li>
+				<li><a onclick="loadContent('/sale/SaleInfo')">정보 수정</a></li>
+				<li><a onclick="loadContent('/sale/menulist')">판매상품 정보</a></li>
+				<li><a onclick="loadContent('/sale/menuInputForm')">판매상품 등록</a></li>
+				<li><a onclick="loadContent('/sale/boardlist')">공지사항 보기</a></li>
+				<li><a onclick="loadContent('/sale/boardwriteform')">공지사항
+						등록</a></li>
+				<li><a onclick="loadContent('/sale/Jobboardlist')">채용공고 보기</a></li>
+				<li><a onclick="loadContent('/sale/JobWriteForm')">채용공고 등록</a></li>
+				<li><a onclick="loadContent('/sale/chat')">문의 내역</a></li>
+				<li><a href="/sale/logout">로그아웃</a></li>
+			</ul>
+		</div>
+
+		<!-- 메인 콘텐츠 -->
+		<div class="main-content" id="main-content"></div>
+	</div>
+
+</body>
+</html>

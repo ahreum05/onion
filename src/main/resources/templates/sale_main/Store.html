@@ -1,0 +1,116 @@
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div th:replace="~{layouts/header}"></div>
+
+<style>
+/* 기존 스타일 그대로 유지 */
+.container1 {
+	max-width: 1200px;
+	margin: 80px auto;
+}
+
+.category {
+	display: flex;
+	gap: 15px;
+	margin-bottom: 20px;
+}
+
+.category button {
+	padding: 10px 20px;
+	background-color: #f0f0f0;
+	border: 1px solid #ccc;
+	border-radius: 20px;
+	cursor: pointer;
+}
+
+.category button:hover {
+	background-color: #0056b3;
+	color: #fff;
+}
+
+.category button.active {
+	background-color: #0056b3;
+	color: #fff;
+}
+
+.market-grid {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 20px;
+}
+
+.market-card {
+	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	padding: 15px;
+	text-align: center;
+}
+
+.market-card img {
+	width: 100%;
+	border-radius: 10px;
+}
+
+.market-info {
+	margin-top: 10px;
+}
+
+.market-title {
+	font-size: 18px;
+	font-weight: bold;
+	color: #333;
+}
+
+.market-jjim {
+	color: #ff4500;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.heart {
+	width: 30px;
+	height: 30px;
+	scale: 10px;
+	object-fit: cover; /* 이미지를 비율 유지하며 잘라서 맞출 수 있음 */
+}
+
+.fixedSize {
+	width: 100px;
+	height: 100px;
+	object-fit: cover; /* 이미지를 비율 유지하며 잘라서 맞출 수 있음 */
+	display: block; /* inline-block 요소의 여백 문제 방지 */
+}
+</style>
+<script>
+function salerinfo(Saleid){
+	var Saleid=Saleid;
+
+	location.href="/business/salerinfo?Saleid="+Saleid
+}
+
+</script>
+
+<div class="container1">
+
+	<!-- 상품 그리드 -->
+		<input type="hidden" name="Saleid" value="">
+		<h1>[ 현재 입점한 상점들 ] </h1>
+		<div class="market-grid">
+			<!-- 상품 카드들 -->
+			<div class="market-card" th:each="saleuser : ${salerList}"
+				th:onclick="salerinfo([[${saleuser.Saleid}]])">						
+				<img th:src="@{'/storage/' + ${saleuser.Saleimage}}" alt="상품 이미지"
+					class="fixedSize">
+				<div class="market-info">
+					<p class="market-title" th:text="${saleuser.salestorename}"></p>
+					<p class="market-price"
+						th:text="'평균 : '+${avgPricesMap[saleuser.Saleid]} + ' 원'"></p>
+					<p class="market-jjim">찜수 보여주기</p>
+				</div>
+			</div>
+		</div>
+</div>
+
+<div th:replace="~{layouts/footer}"></div>

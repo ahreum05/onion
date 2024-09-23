@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<title>Onion community</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+<style type="text/css">
+.container {
+   max-width: 1200px;
+   margin: 0 auto;
+   padding: 0 20px;
+   margin-top: 80px;
+}
+
+.sort-form {
+   text-align: right;
+   margin-bottom: 20px;
+}
+
+.sort-form select {
+   width: 150px;
+   padding: 10px;
+   border: 1px solid #ddd;
+   border-radius: 4px;
+   font-size: 1em;
+}
+
+/* 뉴스 스타일 레이아웃 */
+.community-item {
+   display: flex;
+   align-items: center;
+   padding: 15px 0;
+   border-bottom: 1px solid #ddd;
+}
+
+.community-item img {
+   width: 160px;
+   /* 이미지 크기를 크게 조정 */
+   height: 130px;
+   object-fit: cover;
+   margin-right: 20px;
+}
+
+.community-content {
+   flex-grow: 1;
+}
+
+.community-title {
+   font-size: 1.3em;
+   font-weight: bold;
+   margin-bottom: 5px;
+}
+
+.community-info {
+   color: #666;
+   font-size: 1.1em;
+   line-height: 1.5em;
+}
+
+.paging {
+   color: black;
+   text-decoration: none;
+   display: inline-block;
+   /* 페이징을 가로로 배치 */
+   margin: 0 5px;
+   /* 간격 추가 */
+}
+
+.currentPaging {
+   color: red;
+   text-decoration: underline;
+}
+
+button.refresh, .search-button {
+   margin-left: 10px;
+   background-color: #f0f0f0;
+   border: 1px solid #ddd;
+   padding: 5px 10px;
+   cursor: pointer;
+}
+
+button.refresh:hover, .search-button:hover {
+   background-color: #ddd;
+}
+
+.search-form {
+   margin-top: 20px;
+   text-align: center;
+}
+
+.search-form input[type="text"] {
+   padding: 5px;
+   border: 1px solid #ddd;
+   width: 35%;
+   padding: 8px;
+   box-sizing: border-box;
+}
+
+.search-form button {
+   background-color: #A6A6A6;
+   color: white;
+   border: none;
+   padding: 5px 10px;
+   cursor: pointer;
+   border-radius: 3px;
+}
+
+.search-form button:hover {
+   background-color: #747474;
+}
+
+.community-item a {
+   text-decoration: none;
+   color: black;
+}
+
+.community-item a:hover .community-title {
+   text-decoration: underline;
+   /* 제목에 밑줄 추가 */
+}
+
+.community-content {
+   text-overflow: ellipsis;
+   /* 넘치는 텍스트를 생략 부호로 표시 */
+   margin-bottom: 5px;
+   white-space: nowrap;
+   /* 텍스트를 한 줄로 제한 */
+   overflow: hidden;
+   /* 넘치는 텍스트를 숨김 */
+   text-overflow: ellipsis;
+   /* 넘치는 부분에 생략 부호(...) 추가 */
+   width: 200px;
+   /* 제목의 최대 너비 설정 */
+}
+
+/* 새 글 쓰기 버튼 스타일 */
+.new-post-button {
+   display: inline-block;
+   background-color: #4CAF50;
+   color: white;
+   padding: 10px 20px;
+   text-decoration: none;
+   border-radius: 4px;
+   font-size: 1.2em;
+}
+
+.new-post-button:hover {
+   background-color: #45a049;
+}
+</style>
+</head>
+
+<body>
+   <div th:replace="~{layouts/header}"></div>
+   <div class="container">
+
+      <!-- 정렬 드롭다운 메뉴 -->
+      <form class="sort-form" th:action="@{/community/communityList}"
+         method="get">
+         <select name="sort" onchange="this.form.submit()">
+            <option value="latest" th:selected="${sort == 'latest'}">최신순</option>
+            <option value="like" th:selected="${sort == 'like'}">좋아요순</option>
+            <option value="hit" th:selected="${sort == 'hit'}">조회수순</option>
+         </select>
+      </form>
+
+      <div th:each="dto : ${list}" class="community-item">
+         <a th:href="@{/community/communityView(seq=${dto.cseq},pg=${pg})}">
+            <img th:src="@{|/storage/${dto.cimg}|}" alt="게시글 이미지">
+         </a>
+         <div class="community-content">
+            <a th:href="@{/community/communityView(seq=${dto.cseq},pg=${pg})}">
+               <div class="community-title">[[${dto.csub}]]</div>
+            </a><br> <a
+               th:href="@{/community/communityView(seq=${dto.cseq},pg=${pg})}">
+               <div class="community-content">[[${dto.ccon}]]</div>
+            </a>
+            <div class="community-info">작성자: [[${dto.cname}]] | 좋아요:
+               [[${dto.clike}]] | 조회수: [[${dto.chit}]] | 작성일: [[${dto.clogtime}]]
+            </div>
+         </div>
+      </div>
+
+      <!-- 페이지네이션 -->
+      <div align="center" style="margin-top: 20px;">
+         <div th:if="${startPage > 3}" style="display: inline;">
+            <a th:href="@{/community/communityList(pg=${startPage-1})}"
+               class="paging">이전</a>
+         </div>
+         <div th:each="i : ${#numbers.sequence(startPage, endPage)}"
+            style="display: inline;">
+            <span th:if="${pg == i}"> <a
+               th:href="@{/community/communityList(pg=${i})}" th:text="${i}"
+               class="currentPaging"></a>
+            </span> <span th:unless="${pg == i}"> <a
+               th:href="@{/community/communityList(pg=${i})}" th:text="${i}"
+               class="paging"></a>
+            </span>
+         </div>
+         <div th:if="${endPage < totalP}" style="display: inline;">
+            <a th:href="@{/community/communityList(pg=${endPage+1})}"
+               class="paging">다음</a>
+         </div>
+         <!-- 새 글 쓰기 -->
+         <!-- 새 글 쓰기 버튼 -->
+         <div align="right">
+            <a href="/community/communityWriteForm" class="new-post-button">+
+               글쓰기</a>
+         </div>
+      </div>
+
+
+
+
+      <!-- 검색 폼 -->
+      <form th:action="@{/community/communityList(pg=${pg})}" method="get"
+         class="search-form">
+         <input type="text" name="search" placeholder="검색어를 입력하세요"
+            th:value="${search}">
+         <button type="submit" class="search-button">검색</button>
+         <a href="#" class="refresh" th:href="@{/community/communityList}">
+            <button type="button" class="refresh">새로고침</button>
+         </a>
+      </form>
+   </div>
+   <div th:replace="~{layouts/footer}"></div>
+</body>
+
+</html>

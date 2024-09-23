@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>로그인</title>
+<style>
+body {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start; /* 폼을 위로 이동 */
+	height: 100vh;
+	margin: 0;
+	background-color: white;
+	padding-top: 50px; /* 폼과 화면 상단 사이의 여백 설정 */
+}
+
+.container {
+	width: 100%;
+	max-width: 500px; /* 폼의 최대 너비를 500px로 설정 */
+	margin: 0 auto;
+	padding: 40px; /* 패딩을 늘려 폼이 더 커 보이도록 설정 */
+	background-color: #ffffff;
+	border-radius: 12px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	box-sizing: border-box;
+}
+
+h2 {
+	text-align: center;
+	margin-bottom: 40px; /* 제목과 폼 사이의 간격을 더 넓게 설정 */
+	font-size: 24px; /* 제목의 크기를 더 크게 설정 */
+	color: #333;
+}
+
+h2 a {
+	color: black; /* 글씨 색을 검은색으로 변경 */
+	text-decoration: none; /* 밑줄 제거 */
+}
+
+.radio-group, .form-group {
+	margin-bottom: 20px; /* 각 필드 그룹 사이의 간격을 더 넓게 설정 */
+}
+
+.radio-group label {
+	margin-right: 20px; /* 라디오 버튼 간의 간격 설정 */
+}
+
+.form-group label {
+	display: block;
+	margin-bottom: 8px;
+	font-weight: bold;
+}
+
+input[type="text"], input[type="password"] {
+	width: calc(100% - 20px);
+	padding: 15px; /* 입력 필드의 패딩을 더 넓게 설정 */
+	font-size: 16px; /* 입력 필드의 글꼴 크기를 더 크게 설정 */
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+button {
+	width: 100%;
+	padding: 16px; /* 버튼 패딩을 더 넓게 설정 */
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	color: #fff;
+	font-size: 18px; /* 버튼 글꼴 크기를 더 크게 설정 */
+	margin-top: 10px; /* 버튼 간의 간격을 줄임 */
+}
+
+button[type="submit"] {
+	background-color: black;
+}
+
+.register-link {
+	display: block;
+	text-align: center;
+	margin: 15px 0; /* 버튼과 링크 사이의 간격을 줄임 */
+	color: gray; /* 글씨 색을 회색으로 설정 */
+	font-size: 16px;
+	text-decoration: underline; /* 밑줄 추가 */
+}
+
+.message {
+	text-align: center;
+	margin-top: 20px;
+	font-size: 16px; /* 메시지 글꼴 크기를 더 크게 설정 */
+}
+
+.message p {
+	margin: 0;
+}
+
+.message p.error {
+	color: red;
+}
+
+.message p.success {
+	color: green;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<form action="/login" method="post" id="loginForm">
+			<input type="hidden" name="_csrf" value="${_csrf.token}">
+
+			<h2>
+				<a href="../main/main"> <img src="../img/Main/onion.png"
+					width="200"> <!-- 이미지를 클릭하면 링크로 이동 -->
+				</a>
+			</h2>
+			<!-- 역할 선택 필드 -->
+			<div class="radio-group">
+				<label><input type="radio" name="userType" value="USER"
+					checked> User</label> <label><input type="radio"
+					name="userType" value="MANAGER"> Manager</label>
+			</div>
+
+			<!-- 아이디 입력 필드 -->
+			<div class="form-group">
+				<label>ID</label> <input type="text" name="username" required />
+			</div>
+
+			<!-- 비밀번호 입력 필드 -->
+			<div class="form-group">
+				<label>Password</label> <input type="password" name="password"
+					required />
+			</div>
+
+			<!-- 회원가입 링크 -->
+			<a href="/member/registerForm" class="register-link">회원가입</a>
+
+			<!-- 로그인 버튼 -->
+			<div>
+				<button type="submit">로그인</button>
+			</div>
+
+			<!-- 로그인 오류 메시지 -->
+			<div th:if="${param.error}">
+				<p class="error">아이디 또는 비밀번호가 올바르지 않습니다.</p>
+			</div>
+
+			<!-- 로그아웃 메시지 -->
+			<div class="message" th:if="${param.logout}">
+				<p class="success">성공적으로 로그아웃되었습니다.</p>
+			</div>
+		</form>
+	</div>
+	<script>
+		document.getElementById("loginForm").onsubmit = function() {
+			const userType = document
+					.querySelector('input[name="userType"]:checked').value;
+			const usernameField = document
+					.querySelector('input[name="username"]');
+			// 선택된 userType에 따라 접두사 추가
+			usernameField.value = userType + ':' + usernameField.value;
+		};
+	</script>
+</body>
+</html>

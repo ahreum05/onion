@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>상품 상세 페이지</title>
+   <style>
+      /* 전체 컨테이너 스타일 */
+      .container {
+         max-width: 600px;
+         margin: 0 auto;
+         background-color: white;
+         padding: 20px;
+         border: 1px solid #dbdbdb;
+         border-radius: 8px;
+         margin-top: 20px;
+         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* 슬라이더 스타일 */
+      .image-wrapper {
+         overflow: hidden;
+         position: relative;
+      }
+
+      .slider-wrapper {
+         display: flex;
+         transition: transform 0.5s ease;
+      }
+
+      .slider-wrapper img {
+         width: 100%;
+         height: auto;
+         object-fit: cover;
+         border-radius: 8px;
+      }
+
+      /* 상품 상세 정보 스타일 */
+      .product-view-container {
+         margin-top: 20px;
+      }
+
+      .upload-time {
+         font-size: 14px;
+         color: #7f7f7f;
+         margin-bottom: 10px;
+      }
+
+      .subject h2 {
+         font-size: 24px;
+         color: #262626;
+         margin: 10px 0;
+      }
+
+      .price {
+         font-size: 20px;
+         color: #ff5722;
+         margin: 10px 0;
+      }
+
+      .price span {
+         font-weight: bold;
+      }
+
+      .product-view-container p {
+         font-size: 16px;
+         color: #262626;
+         margin: 10px 0;
+      }
+
+      /* 버튼 스타일 */
+      .buttons {
+         display: flex;
+         justify-content: center; /* 버튼들을 중앙에 배치 */
+         margin: 0 10px;
+      }
+
+      .buttons a {
+         display: inline-block;
+         background-color: #FF9436;
+         /* 주황색 */
+         color: white;
+         padding: 10px 20px;
+         border-radius: 4px;
+         text-decoration: none;
+         font-size: 16px;
+         cursor: pointer;
+         text-align: center;
+         margin: 0 1px; /* 버튼 간의 간격 */
+      }
+
+      .buttons a:hover {
+         background-color: #FF7012;
+         /* 어두운 주황색 */
+      }
+
+      /* 페이징 스타일 (필요 시 추가) */
+      .paging {
+         color: black;
+         text-decoration: none;
+         margin: 0 5px;
+      }
+
+      .currentPaging {
+         color: red;
+         text-decoration: underline;
+      }
+   </style>
+   <script src="../js/boardInfoScript.js" defer></script>
+</head>
+
+<body>
+   <div th:replace="~{layouts/header}"></div>
+
+   <div class="container">
+      <!-- 슬라이더 박스 -->
+      <div class="image-wrapper">
+         <!-- 업로드 시간 표시 -->
+         <div class="upload-time">
+            <p>
+               <span th:text="${boardInfo != null ? '작성자 :' +boardInfo.Bname : '작성자'}"></span>
+            </p>
+            <p>
+               <span th:text="${boardInfo != null ? '업로드 :' +boardInfo.Blogtime : '업로드 시간'}"></span>
+            </p>
+         </div>
+         <div class="slider-wrapper">
+            <img th:src="${boardInfo != null && boardInfo.Bimg != null ? '/storage/' + boardInfo.Bimg : '/images/default.png'}"
+               alt="상품 이미지">
+         </div>
+      </div>
+
+      <!-- 상품 상세 정보 -->
+      <div class="product-view-container">
+         <div class="subject">
+            <h2 th:text="${boardInfo != null ? '제목 : '+boardInfo.Bsub : '상품명'}"></h2>
+         </div>
+
+         <div class="price">
+            <p>
+               <span th:text="${boardInfo != null ? '가격 : '+boardInfo.Bprc : '가격'}"></span>
+            </p>
+         </div>
+
+         <div>
+            <p>
+               <span th:text="${boardInfo != null ? '상품설명 :'  +boardInfo.Bcon : '상품 설명'}"></span>
+            </p>
+         </div>
+         <div>
+            <p>
+               <span th:text="${boardInfo != null ? '조회수 :'  +boardInfo.Bhit : '조회수'}"></span>
+            </p>
+         </div>
+         <div>
+            <p>
+               <span th:text="${boardInfo != null ? '좋아요 수 :'  +boardInfo.Blike : '좋아요'}"></span>
+            </p>
+         </div>
+         <button>
+             <img src="../img/Main/like.png" alt="like" onclick="likePost1()">
+         </button>
+      </div>
+
+		<!-- view 버튼목록 -->
+		<div th:if="${boardInfo.Bid ==id}" class="buttons">
+			<!-- 수정과 삭제에 Bseq 파라미터 추가 -->
+			<a
+				th:href="@{/boardinfo/boardModifyForm(Bseq=${boardInfo.Bseq}, pg=${pg})}">수정</a>
+			<a
+				th:href="@{/boardinfo/boardInfoDelete(Bseq=${boardInfo.Bseq}, pg=${pg})}">삭제</a>
+
+		</div>
+		<div th:if="${boardInfo.Bid !=id}" class="buttons">
+			<a th:href="@{/chat(seq=${boardInfo.Bseq})}">채팅하기</a>
+		</div>
+   </div>
+
+   <div th:replace="~{layouts/footer}"></div>
+   
+</body>
+</html>

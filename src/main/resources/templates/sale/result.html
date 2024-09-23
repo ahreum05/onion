@@ -1,0 +1,118 @@
+<script>
+	var html = "[[${html}]]";
+
+	if (html == "login") {
+		alert("로그인에 실패하셨습니다. 다시 입력해주세요.");
+		history.back();
+	}
+
+	// 회원가입 성공 여부
+	if (html == "register") {
+		if ("[[${result}]]" != "0") {
+			alert("회원가입 되었습니다.");
+			location.href = "/sale/loginForm";
+		} else {
+			alert("회원가입에 실패했습니다. 다시 작성해주세요");
+			history.back();
+		}
+	}
+
+	//판매자 정보 수정 성공 여부
+	if (html == "SaleInfoModify") {
+		if ("[[${result}]]" != "0") {
+			alert("회원정보가 수정 되었습니다.");
+			location.href = "/sale/main";
+		} else {
+			alert("회원정보가 수정에 실패했습니다. 다시 작성해주세요");
+			history.back();
+		}
+	}
+
+	// 메뉴 저장 성공 여부
+	if (html == "MenuInput") {
+		if ("[[${result}]]" != "0") {
+			alert("메뉴가 저장 되었습니다.");
+			location.href = "/sale/main";
+		} else {
+			alert("메뉴가 저장에 실패했습니다. 다시 작성해주세요");
+			history.back();
+		}
+	}
+
+	// 메뉴 수정 성공 여부
+	if (html == "MenuInputModify") {
+		if ("[[${result}]]" != "0") {
+			alert("메뉴가 수정 되었습니다.");
+			location.href = "/sale/main";
+		} else {
+			alert("메뉴가 수정에 실패했습니다. 다시 작성해주세요");
+			history.back();
+		}
+	}
+
+	// 판매자 게시판 성공 여부
+	if (html == "boardwrite") {
+		if ("[[${result}]]" != "0") {
+			alert("게시판이 등록 되었습니다.");
+			location.href = "/sale/main";
+		} else {
+			alert("게시판이 등록에 실패했습니다. 다시 작성해주세요");
+			history.back();
+		}
+	}
+	
+	// 판매자 게시판 수정 성공 여부
+	if (html == "boardmodify") {
+		if ("[[${result}]]" != "0") {
+			alert("게시판이 수정 되었습니다.");
+			location.href = "/sale/main";
+		} else {
+			alert("게시판이 수정에 실패했습니다. 다시 작성해주세요");
+			history.back();
+		}
+	}
+	
+	// 판매자 게시판 삭제 성공 여부
+	if (html == "boarddelete") {
+		if ("[[${result}]]" != "0") {
+			alert("게시판이 삭제 되었습니다.");
+			location.href = "/sale/main";
+		} else {
+			alert("게시판이 삭제에 실패했습니다. 다시 시도해주세요");
+			history.back();
+		}
+	}
+	
+	// 판매자 채용공고 성공 여부
+	if (html == "JobWrite") {
+		if ("[[${result}]]" != "0") {
+			alert("채용공고가 등록 되었습니다.");
+			location.href = "/sale/main";
+		} else {
+			alert("채용공고가 등록에 실패했습니다. 다시 시도해주세요");
+			history.back();
+		}
+	}
+	
+	// 채용공고 수정 성공 여부
+	if (html == "jobModify") {
+		if ("[[${result}]]" != "0") {
+			alert("채용공고가 수정 되었습니다.");
+			location.href = "/sale/main";
+		} else {
+			alert("채용공고가 수정에 실패했습니다. 다시 작성해주세요");
+			history.back();
+		}
+	}
+	// 채용공고 삭제 성공 여부
+	if (html == "jobDelete") {
+		if ("[[${result}]]" != "0") {
+			alert("채용공고가 삭제 되었습니다.");
+			location.href = "/sale/main";
+		} else {
+			alert("채용공고가 삭제에 실패했습니다. 다시 시도해주세요");
+			history.back();
+		}
+	}
+	
+</script>

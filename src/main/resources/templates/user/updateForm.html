@@ -1,0 +1,110 @@
+<div class="container"
+	style="width: 100%; max-width: 500px; margin: auto; padding: 20px;">
+	<!-- 마이페이지 제목 -->
+	<div align="center" style="margin-bottom: 20px;">
+		<h1 style="font-size: 2.5em; color: #333;">회원 정보 수정</h1>
+	</div>
+
+	<!-- 유저 정보 수정 테이블 -->
+	<div
+		style="background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+		<form action="/user/update" method="post"
+			enctype="multipart/form-data" style="display: inline-block;">
+			<table style="width: 100%; border-collapse: collapse; margin: auto;">
+				<tr>
+					<th
+						style="text-align: left; margin-bottom: 8px; font-weight: bold;">프로필
+						사진</th>
+					<td style="padding: 10px 0;"><img
+						th:src="@{/img/{profileImage}(profileImage=${user.profile_image})}"
+						alt="프로필 사진"
+						style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
+
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="padding-top: 10px;">
+						<div style="display: inline-block;">
+							<input type="file" id="profilePicture" name="profilePicture"
+								accept="image/*"
+								style="display: inline-block; font-size: 1em; margin-right: 10px;">
+							<button type="submit"
+								style="padding: 8px 18px; background-color: #D5D5D5; color: #333; border: none; border-radius: 5px; font-size: 1em;">
+								사진 업로드</button>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th
+						style="text-align: left; margin-bottom: 8px; font-weight: bold;">이름</th>
+					<td style="padding: 10px 0; border-bottom: 1px solid #ddd;"><input
+						type="text" name="uname" th:value="${user.uname}"
+						style="width: 65%; padding: 8px; font-size: 1em;"></td>
+				</tr>
+				<tr>
+					<th
+						style="text-align: left; margin-bottom: 8px; font-weight: bold;">아이디</th>
+					<td style="padding: 10px 0; border-bottom: 1px solid #ddd;"><input
+						type="text" name="userid" th:value="${user.userid}" readonly
+						style="width: 65%; padding: 8px; font-size: 1em;"></td>
+				</tr>
+				<tr>
+					<th
+						style="text-align: left; margin-bottom: 8px; font-weight: bold;">비밀번호</th>
+					<td style="padding: 10px 0; border-bottom: 1px solid #ddd;"><input
+						type="password" name="upwd"
+						style="width: 65%; padding: 8px; font-size: 1em;"></td>
+				</tr>
+				<tr>
+					<th
+						style="text-align: left; margin-bottom: 8px; font-weight: bold;">성별</th>
+					<td style="padding: 10px 0; border-bottom: 1px solid #ddd;"><input
+						type="radio" name="ugender" value="m"
+						th:checked="${user.ugender == 'm'}"> 남 <input type="radio"
+						name="ugender" value="f" th:checked="${user.ugender == 'f'}">
+						여</td>
+				</tr>
+				<tr>
+					<th
+						style="text-align: left; margin-bottom: 8px; font-weight: bold;">이메일</th>
+					<td style="padding: 10px 0; border-bottom: 1px solid #ddd;"><input
+						type="text" name="uemail1" th:value="${user.uemail1}"
+						style="width: 42%; padding: 8px; font-size: 1em;"> @ <select
+						name="uemail2" style="width: 42%; padding: 8px; font-size: 1em;">
+							<option value="naver.com"
+								th:selected="${user.uemail2 == 'naver.com'}">naver.com</option>
+							<option value="daum.net"
+								th:selected="${user.uemail2 == 'daum.net'}">daum.net</option>
+							<option value="google.com"
+								th:selected="${user.uemail2 == 'google.com'}">google.com</option>
+					</select></td>
+				</tr>
+				<tr>
+					<th
+						style="text-align: left; margin-bottom: 8px; font-weight: bold;">핸드폰</th>
+					<td style="padding: 10px 0; border-bottom: 1px solid #ddd;"><input
+						type="text" name="utel1" th:value="${user.utel1}" size="3"
+						style="padding: 8px; font-size: 1em;"> - <input
+						type="text" name="utel2" th:value="${user.utel2}" size="4"
+						style="padding: 8px; font-size: 1em;"> - <input
+						type="text" name="utel3" th:value="${user.utel3}" size="4"
+						style="padding: 8px; font-size: 1em;"></td>
+				</tr>
+				<tr>
+					<th
+						style="text-align: left; margin-bottom: 8px; font-weight: bold;">주소</th>
+					<td style="padding: 10px 0; border-bottom: 1px solid #ddd;"><input
+						type="text" name="uaddr" th:value="${user.uaddr}"
+						style="width: 65%; padding: 8px; font-size: 1em;"></td>
+				</tr>
+			</table>
+			<div align="center" style="margin-top: 20px;">
+				<button type="submit"
+					style="padding: 8px 18px; background-color: #333; color: #fff; border: none; border-radius: 5px; font-size: 1em;">
+					회원정보 수정</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+

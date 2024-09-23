@@ -1,0 +1,91 @@
+  <!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>매니저 목록</title>
+<style>
+table {
+   width: 1200px;
+   margin: 20px auto;
+   border-collapse: collapse;
+   margin: 20px auto;
+}
+
+th, td {
+   border: 1px solid #ddd;
+   padding: 10px;
+   text-align: center;
+   padding: 10px;
+}
+
+th {
+   background-color: #f4f4f4;
+}
+
+a:hover {
+   text-decoration: underline;
+}
+
+.pagination {
+   text-decoration: underline;
+   width: 1200px;
+   margin: 20px auto;
+}
+</style>
+<script>
+   window.onload = function() {
+      const errorMessage = /*[[${errorMessage != null ? '"' + errorMessage + '"' : 'null'}]]*/ null;
+      if (errorMessage) {
+         alert(errorMessage);
+      }
+   }
+</script>
+
+</head>
+<body>
+   <h1 align="center">매니저 목록</h1>
+
+   <table>
+      <thead>
+         <tr>
+            <th>아이디</th>
+            <th>가입 날짜</th>
+            <th>권한</th>
+            <th>수정</th>
+            <th>삭제</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr th:each="manager : ${managers}">
+            <td th:text="${manager.mid}"></td>
+            <td th:text="${manager.mlogtime}"></td>
+            <td th:text="${manager.role}"></td>
+            <!-- admin 사용자인 경우 수정 및 삭제 버튼 숨김 -->
+            <td th:if="${manager.mid != 'admin'}">
+               <a th:href="@{/manager/update/{mid}(mid=${manager.mid})}">수정</a>
+            </td>
+            <td th:if="${manager.mid != 'admin'}">
+               <form th:action="@{/manager/delete/{mid}(mid=${manager.mid})}" method="post">
+                  <button type="submit">삭제</button>
+               </form>
+            </td>
+            <!-- admin일 때 빈 칸 추가 -->
+            <td th:if="${manager.mid == 'admin'}"></td>
+            <td th:if="${manager.mid == 'admin'}"></td>
+         </tr>
+      </tbody>
+   </table>
+
+   <div class="pagination">
+      <a href="/manager/registerForm">매니저 등록</a><br>
+      <a href="/manager/dashboard">대쉬보드 돌아가기</a>
+   </div>
+
+   <!-- 에러 메시지 출력 -->
+   <div th:if="${errorMessage}" class="alert alert-danger">
+      <p th:text="${errorMessage}"></p>
+   </div>
+
+</body>
+</html>

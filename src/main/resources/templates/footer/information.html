@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Privacy Policy</title>
+<style>
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	box-sizing: border-box;
+	overflow: auto; /* 필요한 경우 스크롤바를 자동으로 추가합니다. */
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: white;
+	font-family: Arial, sans-serif;
+}
+
+.content {
+	max-width: 1200px;
+	width: 100%;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+.image-row {
+	display: flex; /* 가로로 배치 */
+	justify-content: center;
+	align-items: center;
+	gap: 10px; /* 이미지 사이 간격 */
+	flex-wrap: wrap; /* 화면 크기에 맞춰 자동으로 줄바꿈 */
+}
+
+.image-container {
+	position: relative;
+	display: inline-block;
+	margin: 10px;
+}
+
+.image-container img {
+	width: 300px;
+	height: 200px;
+	object-fit: contain;
+	transition: transform 0.3s ease; /* 선택 사항: 이미지 호버 효과 */
+}
+
+/* 마우스를 올렸을 때 표시되는 텍스트 */
+.hover-text {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: black; /* 텍스트 색상을 검은색으로 설정 */
+	font-size: 17px;
+	font-weight: bold;
+	opacity: 0; /* 처음에는 숨겨져 있음 */
+	transition: opacity 0.3s ease;
+	/* 텍스트 모양을 위한 부드러운 전환 */
+	text-align: center;
+	background-color: rgba(255, 255, 255, 0.7);
+	/* 텍스트 가독성을 개선하기 위한 선택적 배경 */
+	padding: 10px; /* 텍스트 주변의 선택적 패딩 */
+}
+
+.image-container:hover .hover-text {
+	opacity: 1; /* 마우스를 올리면 텍스트 표시 */
+}
+
+.table-container {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 20px 0;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 20px 0;
+}
+
+table, th, td {
+	border: 1px solid #ddd;
+}
+
+th, td {
+	padding: 10px;
+	text-align: left;
+}
+
+th {
+	background-color: #f4f4f4;
+}
+
+.span-span {
+	color: blue;
+	display: block;
+	text-align: center;
+	font-size: 20px; /* 선택 사항: 필요에 따라 글꼴 크기를 조정하세요 */
+	font-weight: bold; /* 선택 사항: 텍스트를 굵게 표시 */
+	margin-bottom: 10px; /* 선택 사항: 범위 아래에 공간 추가 */
+}
+</style>
+</head>
+<body>
+
+	<div class="content">
+		<h3 align="center">주식회사 양파 개인정보 처리방침</h3>
+		<br>
+		<p align="right">적용일자 2024-09-19</p>
+		<p>양퍄(이하 "회사")은(는) 주식회사 양파을(를) 제공함에 있어 정보주체의 자유와 권리 보호를 위해 [개인정보
+			보호법] 및 관계 법령이 정한 바를 준수하여, 적법하게 개인정보를 처리하고 안전하게 관리하고 있습니다. 이에 [개인정보
+			보호법] 제 30조에 따라 정보주체에게 개인정보 처리에 관한 절자 침 기준을 안내하고, 이와 관련한 고층을 신속하고 원활하게
+			처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리방침을 수립공개합니다.</p>
+
+		<div class="text-row">
+			<span class="span-span">주요 개인정보 처리 표시</span>
+			<p style="text-align: center;">기호에 마우스 커서를 대시면 세부사항을 확인할 수 있으며,
+				자세한 내용은 아래의 개인정보 처리 방침을 확인하시기 바랍니다.</p>
+		</div>
+
+		<div class="image-row">
+			<div class="image-container">
+				<img alt="image1" src="/img/Main/PN1.png">
+				<div class="hover-text">CI(연계정보), DI(중복가입확인정보), IP주소, OS종류,
+					UUID 등등</div>
+			</div>
+			<div class="image-container">
+				<img alt="image2" src="/img/Main/PN2.png">
+				<div class="hover-text">회원 탈퇴로 부터 1년</div>
+			</div>
+			<div class="image-container">
+				<img alt="image3" src="/img/Main/PN3.png">
+				<div class="hover-text">고객 문의 접수 및 처리, 고객 불만사항 처리, 광고성 정보 전달 등</div>
+			</div>
+			<div class="image-container">
+				<img alt="image4" src="/img/Main/PN4.png">
+				<div class="hover-text">방문 트래픽 로그 분석</div>
+			</div>
+			<div class="image-container">
+				<img alt="image5" src="/img/Main/PN5.png">
+				<div class="hover-text">담당부서: 서비스 개발, 연락처:Onion@onion.com</div>
+			</div>
+		</div>
+
+		<h3>▮ 개인정보의 처리목적, 수집 항목, 보유 및 이용기간</h3>
+		<p>ⓐ 회사가 처리하고 있는 개인정보의 항목과 목적 및 보유기간은 아래와 같습니다.</p>
+
+		<div class="table-container">
+			<table>
+				<tr>
+					<th width="150">구분(업무명)</th>
+					<th>처리 목적</th>
+					<th>수집 항목</th>
+					<th>보유 및 이용기간</th>
+				</tr>
+				<tr>
+					<td>회원가입 및 관리</td>
+					<td>● 본인 식별 인증 <br> ● 회원 자격 유지 관리
+					</td>
+					<td>필수:CI(연계정보), DI(중복가입확인정보)<br> 선택:이름, 생년월일, 연령대, 나이,
+						휴대전화번호, 이메일주소, 프로필 사진
+					</td>
+					<td>● 회원 탈퇴일로부터 1년</td>
+				</tr>
+				<tr>
+					<td>제품 및 서비스</td>
+					<td>● 이용자 식별 <br>● 제품 및 서비스 제공<br> ● 콘텐츠 제공<br>
+						● 서비스 환경의 유지 관리 및 개선
+					</td>
+					<td>필수:CI(연계정보), DI(중복가입확인정보)<br> 선택:생년월일, 연령대, 나이, 서비스
+						이용 내역
+					</td>
+					<td>● 회원 탈퇴일로부터 1년</td>
+				</tr>
+				<tr>
+					<td>자동으로 수집되는 정보</td>
+					<td>● 웹/앱 방문에 관한 통계 및 분석</td>
+					<td>필수:IP주소, 쿠키, 방문 일시, 서비스 이용기록, 접속 로그, OS종류, 디바이스 종류, 광고식별자,
+						UUID, 위치정보, 푸시 토큰</td>
+					<td>● 회원 탈퇴일로부터 1년</td>
+				</tr>
+				<tr>
+					<td>고객 상담 및 문의</td>
+					<td>● 제품 및 서비스 상담<br> ● 고객 문의 접수 및 처리<br> ● 고객 불만 사항
+						처리<br> ● 문의 접수 및 처리 이력관리
+					</td>
+					<td>필수:아이디, 문의 내용, 상담 내역, 서비스 이용 내역 선택: 휴대전화번호</td>
+					<td>● 회원 탈퇴일로부터 1년</td>
+				</tr>
+				<tr>
+					<td>홍보 및 마케팅</td>
+					<td>● 광고성 정보 전달<br> ● 행사 및 이벤트 안내<br> ● 상품 및 서비스 추천<br>
+						● 신규 상품 및 서비스 안내<br> ● 뉴스레터 발행
+					</td>
+					<td>선택:이메일 주소, 휴대전화번호</td>
+					<td>● 회원 탈퇴일로부터 1년</td>
+				</tr>
+			</table>
+		</div>
+
+		<div>
+			<p>ⓑ 처리하고 있는 개인정보는 상기의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이 변경되는 경우에는
+				개인정보 보호법 제 18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.</p>
+			<p>ⓒ 회사는 법령에 따른 개인정보 보유 이용기간 또는 정보주체로부터 개인정보를 수집 시에 동의 받은 개인정보 보유
+				이용기간 내에서 개인정보를 처리 보유합니다. 다만, 다음의 사유에 해당하는 경우에는 해당 사유 종료시까지 처리 보유합니다.</p>
+			<p>
+				<span>1)</span> 관계 법령 위반에 따른 수사 조사등이 진행 중인 경우에는 해당 수사 조사 종료 시까지
+			</p>
+			<p>
+				<span>2)</span> 홈페이지 이용에 따른 채권 채무관계 잔존 시에는 해당 채권 채무관계 정산 시까지
+			</p>
+			<p>
+				<span>3)</span> 관련 법령에 따른 의무 보유기간에 해당시에는 해당 기간 종료 시까지
+			</p>
+			<p>
+				● 통신비밀보호법 : 웹사이트 방문 기록 등의 통신사실확인자료(3개월)<br> ● 전자상거래법 : 계약 또는
+				청약철회 등에 관한 기록(5년)<br> ● 전자상거래법 : 대금결제 및 재화 등의 공급에 관한 기록(5년)<br>
+				● 전자상거래법 : 소비자의 불만 또는 분쟁처리에 관한 기록(3년)<br> ● 전자상거래법 : 표시광고에 관한
+				기록(6개월)<br> ● 정보통신마업 : 본인확인에 관한 기록(6개월)<br>
+			</p>
+		</div>
+
+
+	</div>
+	<div>
+	<div><button onclick="history.back()">뒤로가기</button></div>	
+	</div>
+
+</body>
+</html>

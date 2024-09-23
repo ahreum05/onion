@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Community View</title>
+   <style>
+      .container {
+         max-width: 600px;
+         margin: 0 auto;
+         background-color: white;
+         padding: 20px;
+         border: 1px solid #dbdbdb;
+         border-radius: 8px;
+         margin-top: 20px;
+         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* 프로필 스타일 */
+      .profile {
+         display: flex;
+         align-items: center;
+         margin-bottom: 20px;
+      }
+
+      .profile-info {
+         font-size: 18px;
+         color: #262626;
+      }
+
+      /* 게시물 내용 스타일 */
+      .content img {
+         width: 100%;
+         height: auto;
+         border-radius: 8px;
+         margin-bottom: 10px;
+      }
+
+      .post-info {
+         font-size: 17px;
+         margin: 10px 0;
+      }
+
+      .post-info strong {
+         font-weight: bold;
+      }
+
+      .post-content {
+         word-wrap: break-word;
+         overflow-wrap: break-word;
+         font-size: 17px;
+      }
+
+      /* 버튼 스타일 */
+      .buttons {
+         display: flex;
+         justify-content: flex-end;
+         margin: 15px 0;
+      }
+
+      .buttons img {
+         cursor: pointer;
+      }
+
+      .buttons input {
+         background-color: transparent;
+         border: none;
+         color: #3897f0;
+         cursor: pointer;
+         font-size: 16px;
+         margin-left: 10px;
+      }
+
+      .buttons input:hover {
+         text-decoration: underline;
+      }
+
+      /* 댓글 스타일 */
+      .comments {
+         margin-top: 20px;
+      }
+
+      .comments h4 {
+         font-size: 18px;
+         margin-bottom: 10px;
+      }
+
+      .comment-item {
+         display: flex;
+         justify-content: space-between;
+         padding: 10px;
+         border-bottom: 1px solid #dbdbdb;
+      }
+
+      .comment-content {
+         flex: 1;
+         overflow-wrap: break-word;
+         font-size: 16px;
+      }
+
+      .comment-actions {
+         margin-left: 10px;
+         text-align: right;
+         white-space: nowrap;
+      }
+
+      .comment-actions a {
+         font-size: 12px;
+         color: #3897f0;
+         text-decoration: none;
+         margin-left: 10px;
+         display: inline-block;
+         font-size: 16px;
+      }
+
+      .comment-actions a:hover {
+         text-decoration: underline;
+      }
+
+      /* 댓글 작성 폼 스타일 */
+      .comment-form {
+         margin-top: 20px;
+         text-align: center;
+      }
+
+      .comment-form textarea {
+         width: calc(100% - 22px);
+         padding: 10px;
+         font-size: 14px;
+         border: 1px solid #dbdbdb;
+         border-radius: 4px;
+         margin-bottom: 10px;
+      }
+
+      .comment-form .form-actions {
+         display: flex;
+         justify-content: center;
+         gap: 10px;
+      }
+
+      .comment-form button,
+      .comment-form input {
+         background-color: #A6A6A6;
+         color: white;
+         border: none;
+         padding: 10px;
+         border-radius: 4px;
+         cursor: pointer;
+         font-size: 14px;
+      }
+
+      .comment-form button:hover,
+      .comment-form input:hover {
+         background-color: #747474;
+      }
+   </style>
+</head>
+
+<body>
+   <div th:replace="~{layouts/header}"></div>
+   <div class="container">
+      <!-- 프로필 정보 -->
+      <div class="profile">
+         <div class="profile-info">
+            <strong>[[${dto.cid}]]</strong><br>
+            <span>작성일: [[${#dates.format(dto.clogtime, 'yyyy-MM-dd')}]]</span>
+         </div>
+      </div>
+
+      <!-- 게시물 내용 -->
+      <div class="content">
+         <img th:src="@{|/storage/${dto.cimg}|}" alt="post image">
+         <div class="post-info">
+            <strong>[[${dto.csub}]]</strong><br>
+            <p class="post-content">[[${dto.ccon}]]</p>
+            조회수: [[${dto.chit}]], 좋아요 수: [[${dto.clike}]]
+         </div>
+      </div>
+
+      <!-- 버튼 -->
+      <div class="buttons">
+         <p style="font-size: 20px;">좋아요 Click!</p>
+         <img src="../img/Main/like.png" alt="like" onclick="likePost()" style="width:30px; height: 50px;">      
+      </div>
+
+      <!-- 댓글 리스트 -->
+      <div class="comments">
+         <h4>댓글</h4>
+         <div th:each="comment : ${comments}" class="comment-item">
+            <div class="comment-content">
+               <strong>[[${comment.userId}]]</strong>: [[${comment.content}]]<br>
+               <span>작성일: [[${#dates.format(comment.logtime, 'yyyy-MM-dd HH:mm')}]]</span>
+            </div>
+            <div class="comment-actions">
+               <div th:if="${comment.userId} == ${userid}">
+                  <a
+                     th:href="@{/community/editCommentForm(commentId=${comment.commentId}, communityId=${dto.cseq})}">수정</a>
+                  <a th:href="@{/community/deleteComment(commentId=${comment.commentId}, communityId=${dto.cseq})}"
+                     onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- 댓글 작성 폼 -->
+      <div class="comment-form">
+         <form id="commentForm" th:action="@{/community/addComment}" method="post">
+            <input type="hidden" name="communityId" th:value="${dto.cseq}">
+            <input type="hidden" name="userId" th:value="${userid}">
+            <textarea name="content" rows="3" placeholder="댓글을 입력하세요" id="commentContent"></textarea>
+            <div class="form-actions">
+               <button type="submit">댓글 작성</button>
+               <input type="button" value="목록" th:onclick="|location.href='/community/communityList?pg=${pg}'|">
+               <div th:if="${dto.cid} == ${userid}">
+                  <input type="button" value="수정"
+                     th:onclick="|location.href='/community/communityModifyForm?seq=${dto.cseq}&pg=${pg}'|">
+                  <input type="button" value="삭제"
+                     th:onclick="|if(confirm('정말 삭제하시겠습니까?')) location.href='/community/communityDelete?seq=${dto.cseq}&pg=${pg}'|">
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+   <div th:replace="~{layouts/footer}"></div>
+
+   <script>
+      function likePost() {
+         if (confirm('좋아요를 클릭하시겠습니까?')) {
+            location.href = '/community/communityLike?seq=[[${dto.cseq}]]&pg=[[${pg}]]';
+         }
+      }
+
+      document.getElementById('commentForm').addEventListener('submit', function (event) {
+         const commentContent = document.getElementById('commentContent').value.trim();
+
+         if (!commentContent) {
+            alert('댓글을 입력하세요.');
+            event.preventDefault(); // 폼 제출을 방지
+         } else {
+            if (!confirm('댓글을 작성하시겠습니까?')) {
+               event.preventDefault(); // 댓글 작성 취소
+            }
+         }
+      });
+   </script>
+</body>
+</html>

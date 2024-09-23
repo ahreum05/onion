@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사용자 리스트</title>
+<style type="text/css">
+.table {
+	width: 1200px;
+	margin: 20px auto;
+	border-collapse: collapse;
+}
+
+.table th, .table td {
+	border: 1px solid #ddd;
+	padding: 10px;
+	text-align: center;
+}
+
+.table th {
+	background-color: #f2f2f2;
+}
+
+.container1 {
+	width: 1200px;
+	margin: 0 auto; /* 화면 가운데 정렬 */
+}
+/* 페이징 스타일 */
+.pagination {
+   text-align: center;
+   margin-top: 20px;
+}
+
+.pagination a {
+   text-decoration: none;
+   margin: 0 5px;
+   color: #333;
+   font-size: 14px;
+}
+
+.pagination a.currentPaging {
+   font-weight: bold;
+   color: #007bff;
+}
+
+</style>
+</head>
+<body>
+	<div class="container1">
+		<h2 style="text-align: center;">사용자 관리</h2>
+		<table class="table">
+			<thead>
+				<tr class="table-primary">
+					<th>아이디</th>
+					<th>이름</th>
+					<th>가입일</th>
+					<th>게시글 수</th>
+					<th>댓글 수</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user : ${list}" align="center">
+					<td>[[${user.userid}]]</td>
+					<td><a
+						th:href="@{/manager/profileView_m(userid=${user.userid},pg=${pg})}"
+						id="info" th:text="${user.uname != null ? user.uname : 'Unknown'}"></a>
+					</td>
+					<td>[[${user.ulogtime}]]</td>
+					<td><a
+						th:href="@{/manager/profileView_m(userid=${user.userid},pg=${pg})}">[[${totalboardcount}]]</a></td>
+					<td><a
+						th:href="@{/manager/profileView_m(userid=${user.userid},pg=${pg})}">[[${commentcount}]]</a></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="pagination">
+			<!-- 페이징 처리 -->
+			<th:block th:if="${startPage > 3}">
+							[<a th:href="@{/manager/profileList(pg=${startPage-1})}"
+					class="paging">이전</a>]
+						</th:block>
+			<th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+				<th:block th:if="${pg == i}">	
+								[<a th:href="@{/manager/profileList(pg=${i})}" th:text="${i}"
+						class="currentPaging"></a>]
+							</th:block>
+				<th:block th:unless="${pg == i}">
+								[<a th:href="@{/manager/profileList(pg=${i})}" th:text="${i}"
+						class="paging"></a>]
+							</th:block>
+			</th:block>
+			<th:block th:if="${endPage < totalP}">
+							[<a th:href="@{/manager/profileList(pg=${endPage+1})}"
+					class="paging">다음</a>]
+						</th:block>
+		</div>
+	</div>
+</body>
+</html>

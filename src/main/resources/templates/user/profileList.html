@@ -1,0 +1,62 @@
+
+<style type="text/css">
+.paging {color:blue; text-decoration: none;}
+.currentPaging {color:red; text-decoration: underline;}
+
+#info:link {color: black; text-decoration: none;}
+#info:visited {color: black; text-decoration: none;}
+#info:active {color: black; text-decoration: none;}
+#info:hover {color: green; text-decoration: underline;}
+</style>
+
+<div class="container">
+	<table class="table" style="width: 650px; margin: auto;">
+		<thead class="table-primary" align="center">
+			<tr>
+				<th width="70">아이디</th>
+				<th width="100">이 름</th>
+				<th width="70">Role</th>
+				<th width="100">가입일</th>
+				<th width="70">게시글 수</th>  <!-- 작성 게시물 -->
+				<th width="70">댓글 수</th>    <!-- 작성 댓글 -->
+			</tr>
+		</thead>
+		
+		<tr th:each="user : ${list}" align="center">
+			<td>[[${user.id}]]</td>
+			<td>[[${user.name}]]
+			<a th:href="@{/profileView_m(pg=${pg}, id=${user.id})}" id="info"></a></td>
+	        <td>[[${user.role}]]</td>
+			<td>[[${user.logtime}]]</td>
+			<td>"${totalA}"       <!-- 작성 게시물로 이동 -->
+			<a th:href="@{/(pg=${pg}, id=${user.id})}" id="info"></a></td>
+			<td>        <!--  작성 댓글 게시물로 이동 -->
+			<a th:href="@{/(pg=${pg}, id=${user.id})}" id="info"></a></td>
+		</tr>
+		
+		<tr style="text-align: center;">
+			<td colspan="7">
+				<th:block th:if="${startPage >3}">
+               		[<a th:href="@{/profileView_m(pg=${startPage-1})}" 
+                  			class="paging">이전</a>]
+            	</th:block>
+				
+				<th:block th:each="page : ${#numbers.sequence(startPage,endPage)}">
+					<th:block th:if="${pg == page}">
+                  		[<a th:href="@{/profileView_m(pg=${page})}"
+                     		class="currentPaging">[[${page}]]</a>]
+					</th:block>
+					<th:block th:if="${pg != page}">                     		
+                  		[<a th:href="@{/profileView_m(pg=${page})}"   
+                     		class="paging">[[${page}]]</a>] 
+               		</th:block>
+               	</th:block>
+               	
+               	<th:block th:if="${endPage <totalP}"> 
+               		[<a th:href="@{/profileView_m(pg=${endPage+1})}"
+                  			class="paging">다음</a>]
+            	</th:block>				
+			</td>
+		</tr>
+	</table>
+</div>

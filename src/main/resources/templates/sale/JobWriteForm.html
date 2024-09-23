@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>채용 공고 작성</title>
+<style>
+form {
+	align-items: center;
+	background-color: white;
+	padding: 20px;
+	width: 100%;
+	max-width: 800px;
+	margin: 20px;
+	box-sizing: border-box;
+}
+
+h1 {
+	text-align: center;
+	color: #333;
+}
+
+label {
+	display: block;
+	margin-top: 15px;
+	font-weight: bold;
+	color: #333;
+}
+
+input[type="checkbox"], input[type="radio"] {
+	margin-right: 10px;
+}
+
+input[type="text"], input[type="number"], input[type="date"], input[type="time"],
+	textarea {
+	width: 100%;
+	padding: 10px;
+	margin-top: 5px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	margin-bottom: 20px;
+	font-size: 16px;
+}
+
+.working-time {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.working-time input[type="time"] {
+	width: 48%;
+}
+
+.checkbox-group, .radio-group {
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	margin-bottom: 20px;
+}
+
+.checkbox-group label, .radio-group label {
+	margin-right: 10px;
+}
+
+button {
+	width: 100%;
+	padding: 10px;
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+
+/* 양쪽에 여백 추가 */
+@media ( min-width : 600px) {
+	form {
+		margin: 20px auto; /* 좌우 중앙 정렬 및 여백 */
+	}
+}
+</style>
+</head>
+<body>
+	<form action="/sale/Jobwrite" method="POST">
+		<h1>채용 공고 작성</h1>
+
+		<!-- 근무 요일 -->
+		<label>근무 요일:</label>
+		<div class="checkbox-group">
+			<input type="checkbox" id="monday" name="JBWorkingdate" value="월">
+			<label for="monday">월</label> <input type="checkbox" id="tuesday"
+				name="JBWorkingdate" value="화"> <label for="tuesday">화</label>
+			<input type="checkbox" id="wednesday" name="JBWorkingdate" value="수">
+			<label for="wednesday">수</label> <input type="checkbox" id="thursday"
+				name="JBWorkingdate" value="목"> <label for="thursday">목</label>
+			<input type="checkbox" id="friday" name="JBWorkingdate" value="금">
+			<label for="friday">금</label> <input type="checkbox" id="saturday"
+				name="JBWorkingdate" value="토"> <label for="saturday">토</label>
+			<input type="checkbox" id="sunday" name="JBWorkingdate" value="일">
+			<label for="sunday">일</label>
+		</div>
+
+		<!-- 근무 시간 -->
+		<label>근무 시간:</label>
+		<div class="working-time">
+			<input type="time" name="Workinghours_start"> <span>~</span>
+			<input type="time" name="Workinghours_end">
+		</div>
+
+		<!-- 채용 종료일 -->
+		<label for="JBEnddate">채용 종료일:</label> <input type="date"
+			id="JBEnddate" name="JBEnddate">
+
+		<!-- 급여 종류 -->
+		<label>급여 종류:</label>
+		<div class="radio-group">
+			<input type="radio" id="monthly" name="JBSalarytype" value="월급">
+			<label for="monthly">월급</label> <input type="radio" id="weekly"
+				name="JBSalarytype" value="주급"> <label for="weekly">주급</label>
+			<input type="radio" id="daily" name="JBSalarytype" value="일급">
+			<label for="daily">일급</label> <input type="radio" id="time"
+				name="JBSalarytype" value="시급"> <label for="time">시급</label>
+		</div>
+
+		<!-- 급여 금액 -->
+		<label for="JBSalary">급여 금액:</label> <input type="number" id="JBSalary"
+			name="JBSalary" min="0" placeholder="숫자만 입력하세요">
+
+		<!-- 채용 인원 -->
+		<label for="JBPeoplenum">채용 인원:</label> <input type="number"
+			id="JBPeoplenum" name="JBPeoplenum" min="0" placeholder="숫자만 입력하세요">
+
+		<!-- 제목 -->
+		<label for="JBsub">제목:</label> <input type="text" id="JBsub"
+			name="JBsub" placeholder="제목을 입력하세요" required>
+
+		<!-- 글 내용 -->
+		<label for="JBcon">글 내용:</label>
+		<textarea id="JBcon" name="JBcon" rows="5" placeholder="내용을 입력하세요"
+			required></textarea>
+
+		<label for="is_available">게시 여부</label> <input type="checkbox"
+			id="is_available" name="is_available" value="1" checked> 게시 중
+		<!-- 제출 버튼 -->
+		<button type="submit">공고 등록</button>
+	</form>
+</body>
+</html>

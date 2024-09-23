@@ -1,0 +1,213 @@
+<link rel="stylesheet" type="text/css" th:href="@{/css/chatroom.css}">
+
+<div th:replace="~{/layouts/header}"></div>
+<div>
+    <div class="container" id="chatroom">
+        <!-- 채팅방 목록 영역 -->
+        <div id="westbar">
+            <div class="user-list">
+                <div class="userName">
+                    <label><b>[[${senderId}]]</b></label>
+                </div>
+
+                <div class="user-chatList">
+                    <!-- 채팅방 목록을 반복 출력 -->
+                    <div th:each="chatRoom : ${chatlist}" class="chat-item">
+                        <div th:if="${chatRoom.CRrecid eq senderId}">
+                            <div class="chat-room-item"
+                                th:onclick="javascript:loadChatRoom([[${chatRoom.CRroomnum}]], [[${chatRoom.CRsendid}]])">
+                                <p th:text="${chatRoom.CRsendid} + '와의 채팅방'">채팅방 이름</p>
+                            </div>
+                        </div>
+                        <div th:if="${chatRoom.CRrecid ne senderId}">
+                            <div class="chat-room-item"
+                                th:onclick="javascript:loadChatRoom([[${chatRoom.CRroomnum}]], [[${chatRoom.CRrecid}]])">
+                                <p th:text="${chatRoom.CRrecid} + '와의 채팅방'">채팅방 이름</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 채팅 메시지 영역 -->
+        <div id="chat-area">
+            <div class="chat-header">
+                <p id="name"><!--[[${receiveName}]]--></p>
+            </div>
+
+            <div class="chat-msgArea" id="chat-msgArea">
+                <div th:each="message : ${messages}">
+                    <div th:class="${message.CMsendid == senderId} ? 'msg-sent' : 'msg-received'">
+                        <span th:text="${message.CMsendmsg}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input_button">
+                <input type="text" class="chat-input" id="chat-input" placeholder="메시지를 입력하세요...">
+                <button class="btn btn-outline-secondary" id="button-send">전송</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{/layouts/footer}"></div>
+<script>
+let ws; // ws를 전역변수로 뺌
+
+function loadChatMessages(chatRoomNumber, chatrecivedId) {
+    fetch(`/ws/chat/${chatRoomNumber}`)
+        .then(response => response.json())
+        .then(messages => {
+            // 불러온 메시지를 화면에 표시
+			var msgArea = document.getElementById("chat-msgArea");
+
+			while (msgArea.firstChild) {
+			    msgArea.removeChild(msgArea.firstChild); // 모든 자식 요소를 삭제 -> 채팅방 누르면 계속 동일한 메세지가 쌓임
+			}
+			
+            messages.forEach(msg => {
+				// 보내는 사람 왼쪽 / 받는사람 오른쪽으로 배치
+                displayMessage(msg.cmsendmsg, msg.cmsendid === chatrecivedId ? "received" : "sent");
+            });
+			alert("성공");
+			// 채팅방에 이름뜨게하기
+			document.querySelector("#name").textContent = chatrecivedId;
+			
+        })
+        .catch(error => console.error("메시지 불러오기 에러:", error));
+}
+
+// 메세지 보낸 형식 정리해서 수신자는 왼쪽 발신자는 오른쪽에 위치하도록 할꺼임
+	function displayMessage(message, type) {
+
+		var msgArea = document.getElementById("chat-msgArea");
+		var newMessage = document.createElement("div");
+
+		if (type == "sent") {
+			newMessage.classList.add("msg-sent");
+		} else {
+			newMessage.classList.add("msg-received");
+		}
+
+		// 변수 - 채팅창 글자수 25개 제한 그뒤는 enter로 줄넘김 
+		var lineMax = 25;
+		var nextText = "";	
+		for(var i =0 ; i< message.length; i+= lineMax){
+			nextText += message.slice(i,i+lineMax)+"\n";
+		}
+
+		newMessage.innerText = nextText.trim();
+		msgArea.appendChild(newMessage);
+		msgArea.scrollTop = msgArea.scrollHeight; // 스크롤을 자동으로 맨 아래로 이동
+	}
+	
+function loadChatRoom(chatRoomNumber, chatrecivedId) {
+	
+	loadChatMessages(chatRoomNumber, chatrecivedId);
+	
+	// 기존 웹소켓 연결 닫기 -> 다른 웹소켓 열려면 닫아야함
+	if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
+        console.log("WebSocket already open or connecting, closing previous connection...");
+        ws.close(); 
+    }
+	
+	// 웹소켓 초기화
+    ws = new WebSocket(`ws://${window.location.host}/ws/chatsocket/${chatRoomNumber}`);
+	console.log("ws의 url 주소 확인 : ",ws)
+    const senderId = '[[${senderId}]]';  // Thymeleaf에서 받은 senderId
+	 
+	// 변수 - 날짜 출력을 위한 변수
+	var date = new Date()
+	var year = date.getFullYear();
+	var month = date.getMonth() + 1;
+	var day = date.getDate();
+
+	var calender = year + "년 " + month + "월 " + day + "일";
+	 
+ // 웹소켓 이벤트 핸들러 설정
+ // 열렸을 때 
+    ws.onopen = function() {
+    	 console.log(`채팅방 ${chatRoomNumber}이 오픈되었습니다.`);
+         ws.send(JSON.stringify({
+             type: 'join',
+             senderId: senderId,
+             chatRoomNumber: chatRoomNumber
+         }));
+    };
+
+	// 메세지 입력됫을 떄
+	ws.onmessage = function(event) {
+	    console.log("서버로부터 메시지:", event.data);
+
+	    let receivedMessage;
+	    try {
+	        receivedMessage = JSON.parse(event.data);
+	        console.log("receivedMessage (JSON 파싱 성공):", receivedMessage);
+	    } catch (e) {
+	        console.log("JSON 파싱 실패, 메시지를 텍스트로 처리합니다:", event.data);
+	        receivedMessage = event.data;
+	    }
+
+	    // 현재 클라이언트의 senderId (HTML에서 Thymeleaf 등을 통해 동적으로 삽입)
+	    const currentSenderId = '[[${senderId}]]';  // 클라이언트의 senderId
+
+	    if (receivedMessage.type === "received") {
+	        // 받은 메시지의 senderId와 현재 클라이언트의 senderId를 비교
+	        if (receivedMessage.senderId === currentSenderId) {
+	            // 내가 보낸 메시지이므로 오른쪽에 표시
+	            displayMessage(receivedMessage.content, "sent");
+	        } else {
+	            // 다른 사람이 보낸 메시지이므로 왼쪽에 표시
+	            displayMessage(receivedMessage.content, "received");
+	        }
+	    }
+	};
+
+	// 채팅방 닫았을떄
+    ws.onclose = function(event) {
+    	 console.log("채팅방 " + chatRoomNumber + "이 종료되었습니다: " + event.reason);
+    	    console.log("WebSocket 연결이 닫혔습니다. 코드: " + event.code + ", 이유: " + event.reason);
+    	};
+    	
+    ws.onerror = function(event) {
+        console.error("WebSocket 에러:", event);
+    };
+	 
+
+ // 버튼 클릭 시 메시지 전송
+	document.getElementById("button-send").addEventListener("click",
+			function() {
+				var chatInput = document.getElementById("chat-input");
+				var message = chatInput.value;
+			    var senderId = '[[${senderId}]]';  // 발신자 ID
+
+				if (message.trim() !== "") {
+					const sendMessage = JSON.stringify({
+						type : "sent",
+						senderId: senderId,  
+						content : message
+					});
+					
+				    console.log("전송된 메시지:", sendMessage);
+					ws.send(sendMessage); // 서버로 내 메세지 전송
+					displayMessage(message, "sent"); // 메시지를 화면에 표시
+					chatInput.value = ""; // 메시지 보낸 뒤에는 입력란을 빈칸으로
+				}
+			});
+
+	// 엔터키를 누르면 메시지 전송
+	document.getElementById("chat-input").addEventListener("keydown",
+			function(event) {
+				if (event.key === "Enter") {
+					event.preventDefault();
+					document.getElementById("button-send").click();
+				}
+			});
+  
+    
+}
+
+
+</script>

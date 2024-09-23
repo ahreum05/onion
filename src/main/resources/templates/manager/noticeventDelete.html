@@ -1,0 +1,14 @@
+
+<script type="text/javascript">
+	window.onload = function() {
+		setTimeout(function() {
+			if ("[[${result}]]" == "true") {
+				alert("삭제 성공");
+				location.href = "/manager/noticeventList?pg=[[${pg}]]";
+			} else {
+				alert("삭제 실패");
+				history.back();
+			}
+		}, 100);
+	}
+</script>

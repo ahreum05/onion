@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Banner Card</title>
+<style>
+body {
+	margin: 0;
+	overflow-y: scroll; /* Enable vertical scrolling */
+}
+
+.banner-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 100vh;
+	/* Each image container fills the entire viewport height */
+}
+
+.banner-card div {
+	height: 100vh; /* Each image container is full viewport height */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.banner-card img {
+	max-width: 100%;
+	max-height: 100%;
+	/* Ensure images maintain aspect ratio within the viewport */
+}
+
+button:hover {
+	background-color: #45a049; /* 마우스 오버 시 색상 변경 */
+}
+
+.button-container {
+	background-color: #A6A6A6;
+	color: white;
+	border: none;
+	padding: 10px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+	
+}
+</style>
+</head>
+<body>
+
+
+	<body class="banner-card">
+<div>
+		<img alt="page1" src="/img/Main/Page1.jpg">
+	</div>
+	<div>
+		<img alt="page2" src="/img/Main/Page2.jpg">
+	</div>
+	<div>
+		<img alt="page3" src="/img/Main/Page3.jpg">
+	</div>
+	<div>
+		<img alt="page4" src="/img/Main/Page4.jpg">
+	</div>
+	<div>
+		<img alt="page5" src="/img/Main/Page5.jpg">
+	</div>
+</body>
+<div class="button-container">
+	<button onclick="history.back()">뒤로가기</button>
+</div>
+</body></html>
